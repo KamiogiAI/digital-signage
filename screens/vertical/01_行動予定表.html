@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>行動予定表</title>
+  <link rel="stylesheet" href="../../css/common.css">
+  <style>
+    .screen-vertical {
+      transform: scale(0.5);
+      transform-origin: top left;
+    }
+    .data-table td.name {
+      font-weight: 600;
+      font-size: 32px;
+    }
+    .data-table td.destination {
+      text-align: left;
+      padding-left: 25px;
+    }
+    .data-table td.time {
+      font-size: 30px;
+      font-weight: 500;
+    }
+    .out-badge {
+      background: #e53e3e;
+      color: white;
+      padding: 5px 15px;
+      border-radius: 15px;
+      font-size: 20px;
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="screen-vertical">
+    <header class="header">
+      <h1>📋 行動予定表</h1>
+      <div class="datetime">
+        <div class="time">14:35</div>
+        <div class="date">2026年2月15日（土）</div>
+      </div>
+    </header>
+    
+    <div class="content">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width: 20%">氏名</th>
+            <th style="width: 35%">行先</th>
+            <th style="width: 22%">使用車両</th>
+            <th style="width: 23%">帰社予定</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="name">山田 太郎</td>
+            <td class="destination">○○建設 現場事務所</td>
+            <td>品川 300 あ 1234</td>
+            <td class="time">16:00</td>
+          </tr>
+          <tr>
+            <td class="name">佐藤 花子</td>
+            <td class="destination">△△工業 打合せ</td>
+            <td>品川 500 い 5678</td>
+            <td class="time">15:30</td>
+          </tr>
+          <tr>
+            <td class="name">鈴木 一郎</td>
+            <td class="destination">□□商事 資材搬入立会</td>
+            <td>品川 300 う 9012</td>
+            <td class="time">17:00</td>
+          </tr>
+          <tr>
+            <td class="name">田中 次郎</td>
+            <td class="destination">市役所 申請手続き</td>
+            <td>—</td>
+            <td class="time">14:00</td>
+          </tr>
+          <tr>
+            <td class="name">高橋 美咲</td>
+            <td class="destination">◇◇設計 図面確認</td>
+            <td>品川 300 え 3456</td>
+            <td class="time">16:30</td>
+          </tr>
+          <tr>
+            <td class="name">伊藤 健太</td>
+            <td class="destination">現場A棟 施工管理</td>
+            <td>—</td>
+            <td class="time">18:00</td>
+          </tr>
+          <tr>
+            <td class="name">渡辺 裕子</td>
+            <td class="destination">本社 会議出席</td>
+            <td>品川 500 お 7890</td>
+            <td class="time">15:00</td>
+          </tr>
+          <tr>
+            <td class="name">中村 大輔</td>
+            <td class="destination">在席<span class="out-badge">外出中</span></td>
+            <td>—</td>
+            <td class="time">—</td>
+          </tr>
+          <tr>
+            <td class="name">小林 恵子</td>
+            <td class="destination">◎◎電気 配線確認</td>
+            <td>品川 300 か 1122</td>
+            <td class="time">16:00</td>
+          </tr>
+          <tr>
+            <td class="name">加藤 誠</td>
+            <td class="destination">在席</td>
+            <td>—</td>
+            <td class="time">—</td>
+          </tr>
+          <tr>
+            <td class="name">吉田 真理</td>
+            <td class="destination">銀行 振込手続き</td>
+            <td>—</td>
+            <td class="time">14:30</td>
+          </tr>
+          <tr>
+            <td class="name">松本 隆</td>
+            <td class="destination">在席</td>
+            <td>—</td>
+            <td class="time">—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

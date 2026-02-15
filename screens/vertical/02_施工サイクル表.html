@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>施工サイクル表</title>
+  <link rel="stylesheet" href="../../css/common.css">
+  <style>
+    .screen-vertical {
+      transform: scale(0.5);
+      transform-origin: top left;
+    }
+    .cycle-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .cycle-table th {
+      background: var(--primary-color);
+      color: white;
+      padding: 20px 15px;
+      font-size: 28px;
+      font-weight: 600;
+      text-align: center;
+      border: 2px solid var(--border-color);
+    }
+    .cycle-table td {
+      padding: 20px 15px;
+      font-size: 24px;
+      border: 2px solid var(--border-color);
+      vertical-align: top;
+    }
+    .cycle-table tr:nth-child(even) {
+      background: var(--row-even);
+    }
+    .cycle-table tr:nth-child(odd) {
+      background: var(--row-odd);
+    }
+    .task-title {
+      font-weight: 700;
+      font-size: 28px;
+      color: var(--primary-color);
+      margin-bottom: 10px;
+    }
+    .task-content {
+      font-size: 22px;
+      line-height: 1.6;
+      color: #4a5568;
+    }
+    .status-cell {
+      text-align: center;
+      vertical-align: middle;
+    }
+    .status-icon {
+      font-size: 48px;
+    }
+    .status-icon.complete { color: #38a169; }
+    .status-icon.progress { color: #d69e2e; }
+    .status-icon.pending { color: #a0aec0; }
+    .status-icon.warning { color: #e53e3e; }
+    .status-label {
+      font-size: 20px;
+      margin-top: 8px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="screen-vertical">
+    <header class="header">
+      <h1>🔄 施工サイクル表</h1>
+      <div class="datetime">
+        <div class="time">14:35</div>
+        <div class="date">2026年2月15日（土）</div>
+      </div>
+    </header>
+    
+    <div class="content">
+      <table class="cycle-table">
+        <thead>
+          <tr>
+            <th style="width: 75%">作業内容</th>
+            <th style="width: 25%">ステータス</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div class="task-title">1. 朝礼・KY活動</div>
+              <div class="task-content">全員参加による朝礼、危険予知活動の実施</div>
+            </td>
+            <td class="status-cell">
+              <div class="status-icon complete">✓</div>
+              <div class="status-label">完了</div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="task-title">2. 足場組立</div>
+              <div class="task-content">A棟東側 3F〜5F 外部足場の組立作業</div>
+            </td>
+            <td class="status-cell">
+              <div class="status-icon complete">✓</div>
+              <div class="status-label">完了</div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="task-title">3. 鉄筋組立</div>
+              <div class="task-content">B棟基礎部分 配筋作業（D13, D16）</div>
+            </td>
+            <td class="status-cell">
+              <div class="status-icon progress">◐</div>
+              <div class="status-label">作業中</div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="task-title">4. 型枠建込</div>
+              <div class="task-content">A棟 2F スラブ型枠の建込作業</div>
+            </td>
+            <td class="status-cell">
+              <div class="status-icon pending">○</div>
+              <div class="status-label">未着手</div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="task-title">5. コンクリート打設</div>
+              <div class="task-content">A棟 1F 壁・柱部分 コンクリート打設</div>
+            </td>
+            <td class="status-cell">
+              <div class="status-icon pending">○</div>
+              <div class="status-label">未着手</div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="task-title">6. 設備配管</div>
+              <div class="task-content">B棟 給排水配管ルート確認・墨出し</div>
+            </td>
+            <td class="status-cell">
+              <div class="status-icon warning">!</div>
+              <div class="status-label">要確認</div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="task-title">7. 片付け・清掃</div>
+              <div class="task-content">作業エリア周辺の整理整頓・清掃</div>
+            </td>
+            <td class="status-cell">
+              <div class="status-icon pending">○</div>
+              <div class="status-label">未着手</div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="task-title">8. 終礼・翌日準備</div>
+              <div class="task-content">本日の振り返り、翌日作業の確認</div>
+            </td>
+            <td class="status-cell">
+              <div class="status-icon pending">○</div>
+              <div class="status-label">未着手</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

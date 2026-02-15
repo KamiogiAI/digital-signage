@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>パターンB：分割表示方式</title>
+  <link rel="stylesheet" href="../../css/common.css">
+  <style>
+    body {
+      background: #1a202c;
+    }
+    .demo-container {
+      display: flex;
+      gap: 40px;
+      padding: 40px;
+      flex-wrap: wrap;
+    }
+    .demo-box {
+      background: #2d3748;
+      border-radius: 15px;
+      padding: 30px;
+    }
+    .demo-title {
+      color: white;
+      font-size: 24px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .screen-demo {
+      border: 3px solid #4a5568;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    /* 縦置きモニターデモ（縮小表示） */
+    .vertical-demo {
+      width: 270px;
+      height: 480px;
+      background: #f7fafc;
+      display: flex;
+      flex-direction: column;
+    }
+    /* 横置きモニターデモ（縮小表示） */
+    .horizontal-demo {
+      width: 480px;
+      height: 270px;
+      background: #f7fafc;
+      display: flex;
+      flex-direction: column;
+    }
+    /* メインエリア（表） */
+    .main-area {
+      flex: 7;
+      background: #f7fafc;
+      padding: 10px;
+      overflow: hidden;
+    }
+    /* サブエリア（ポスター） */
+    .sub-area {
+      flex: 3;
+      background: #2d3748;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+    }
+    .mini-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 10px;
+    }
+    .mini-table th {
+      background: #1a365d;
+      color: white;
+      padding: 5px;
+      font-size: 9px;
+    }
+    .mini-table td {
+      padding: 4px;
+      border: 1px solid #e2e8f0;
+      font-size: 8px;
+    }
+    .mini-table tr:nth-child(even) {
+      background: #edf2f7;
+    }
+    .mini-header {
+      background: #2d3748;
+      color: white;
+      padding: 8px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .mini-poster {
+      width: 90%;
+      height: 80%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 10px;
+      text-align: center;
+    }
+    .split-label {
+      color: #a0aec0;
+      font-size: 12px;
+      margin-top: 15px;
+      text-align: center;
+    }
+    .explanation {
+      background: #2d3748;
+      color: white;
+      padding: 30px;
+      border-radius: 15px;
+      margin: 20px 40px;
+      max-width: 800px;
+    }
+    .explanation h2 {
+      color: #68d391;
+      margin-bottom: 20px;
+    }
+    .explanation ul {
+      line-height: 2;
+      padding-left: 20px;
+    }
+    .explanation li {
+      margin-bottom: 10px;
+    }
+    .pros { color: #68d391; }
+    .cons { color: #fc8181; }
+    .option-box {
+      background: #4a5568;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 20px;
+    }
+    .option-title {
+      color: #fbd38d;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-container">
+    <!-- 縦置きモニター：分割表示 -->
+    <div class="demo-box">
+      <div class="demo-title">📱 縦置きモニター（70:30分割）</div>
+      <div class="screen-demo vertical-demo">
+        <div class="main-area">
+          <div class="mini-header">📋 行動予定表</div>
+          <table class="mini-table">
+            <tr><th>氏名</th><th>行先</th><th>帰社</th></tr>
+            <tr><td>山田</td><td>○○建設</td><td>16:00</td></tr>
+            <tr><td>佐藤</td><td>△△工業</td><td>15:30</td></tr>
+            <tr><td>鈴木</td><td>□□商事</td><td>17:00</td></tr>
+            <tr><td>田中</td><td>市役所</td><td>14:00</td></tr>
+            <tr><td>高橋</td><td>◇◇設計</td><td>16:30</td></tr>
+          </table>
+        </div>
+        <div class="sub-area">
+          <div class="mini-poster">🛡️ 安全第一<br>ポスター</div>
+        </div>
+      </div>
+      <div class="split-label">上70% : 下30%</div>
+    </div>
+
+    <!-- 横置きモニター：分割表示 -->
+    <div class="demo-box">
+      <div class="demo-title">🖥️ 横置きモニター（70:30分割）</div>
+      <div class="screen-demo horizontal-demo">
+        <div class="main-area">
+          <div class="mini-header">🏢 本日の協力業者</div>
+          <table class="mini-table">
+            <tr><th>業者名</th><th>作業内容</th><th>人数</th></tr>
+            <tr><td>山田組</td><td>足場組立</td><td>8名</td></tr>
+            <tr><td>鈴木建設</td><td>鉄筋工事</td><td>6名</td></tr>
+            <tr><td>佐藤工業</td><td>型枠工事</td><td>5名</td></tr>
+          </table>
+        </div>
+        <div class="sub-area">
+          <div class="mini-poster">📢 お知らせ</div>
+        </div>
+      </div>
+      <div class="split-label">上70% : 下30%</div>
+    </div>
+  </div>
+
+  <div class="explanation">
+    <h2>パターンB：分割表示方式</h2>
+    <ul>
+      <li><strong>動作:</strong> 画面を上下（または左右）に分割し、常に両方表示</li>
+      <li><strong>メインエリア（70%）:</strong> 表を表示（切り替えあり）</li>
+      <li><strong>サブエリア（30%）:</strong> ポスターを表示（スライドショー）</li>
+      <li class="pros">✅ メリット: 表とポスターを同時に確認できる</li>
+      <li class="cons">❌ デメリット: 表の表示領域が狭くなり、文字が小さくなる</li>
+      <li class="cons">❌ デメリット: ポスターも小さく表示される</li>
+      <li class="cons">❌ デメリット: レイアウト調整が複雑</li>
+    </ul>
+    
+    <div class="option-box">
+      <div class="option-title">💡 分割比率のオプション</div>
+      <ul style="margin: 0; padding-left: 20px;">
+        <li>80:20 — 表を優先、ポスターは補助的に</li>
+        <li>70:30 — バランス型（上図）</li>
+        <li>60:40 — ポスターを大きめに</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

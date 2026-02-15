@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>協力業者作業一覧</title>
+  <link rel="stylesheet" href="../../css/common.css">
+  <style>
+    .screen-horizontal {
+      transform: scale(0.5);
+      transform-origin: top left;
+    }
+    .company-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      padding: 20px;
+    }
+    .company-card {
+      background: white;
+      border: 3px solid var(--border-color);
+      border-radius: 15px;
+      padding: 30px 20px;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s;
+    }
+    .company-card:hover {
+      transform: scale(1.02);
+    }
+    .company-name {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 15px;
+    }
+    .company-work {
+      font-size: 22px;
+      color: #4a5568;
+      margin-bottom: 10px;
+    }
+    .company-count {
+      font-size: 20px;
+      color: #718096;
+    }
+    .company-count strong {
+      font-size: 28px;
+      color: var(--accent-color);
+    }
+    .summary-bar {
+      background: var(--secondary-color);
+      color: white;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 28px;
+    }
+    .summary-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .summary-number {
+      font-size: 42px;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div class="screen-horizontal">
+    <header class="header">
+      <h1>🏢 本日の協力業者</h1>
+      <div class="datetime">
+        <div class="time">14:35</div>
+        <div class="date">2026年2月15日（土）</div>
+      </div>
+    </header>
+    
+    <div class="summary-bar">
+      <div class="summary-item">
+        <span>本日入場業者</span>
+        <span class="summary-number">8</span>
+        <span>社</span>
+      </div>
+      <div class="summary-item">
+        <span>入場人数</span>
+        <span class="summary-number">47</span>
+        <span>名</span>
+      </div>
+    </div>
+    
+    <div class="content" style="padding-top: 30px;">
+      <div class="company-grid">
+        <div class="company-card">
+          <div class="company-name">（株）山田組</div>
+          <div class="company-work">足場組立</div>
+          <div class="company-count"><strong>8</strong> 名</div>
+        </div>
+        <div class="company-card">
+          <div class="company-name">鈴木建設（株）</div>
+          <div class="company-work">鉄筋工事</div>
+          <div class="company-count"><strong>6</strong> 名</div>
+        </div>
+        <div class="company-card">
+          <div class="company-name">（有）佐藤工業</div>
+          <div class="company-work">型枠工事</div>
+          <div class="company-count"><strong>5</strong> 名</div>
+        </div>
+        <div class="company-card">
+          <div class="company-name">田中設備（株）</div>
+          <div class="company-work">設備配管</div>
+          <div class="company-count"><strong>4</strong> 名</div>
+        </div>
+        <div class="company-card">
+          <div class="company-name">（株）高橋電工</div>
+          <div class="company-work">電気工事</div>
+          <div class="company-count"><strong>6</strong> 名</div>
+        </div>
+        <div class="company-card">
+          <div class="company-name">伊藤塗装（株）</div>
+          <div class="company-work">塗装工事</div>
+          <div class="company-count"><strong>4</strong> 名</div>
+        </div>
+        <div class="company-card">
+          <div class="company-name">（株）中村重機</div>
+          <div class="company-work">重機オペ</div>
+          <div class="company-count"><strong>2</strong> 名</div>
+        </div>
+        <div class="company-card">
+          <div class="company-name">小林運輸（株）</div>
+          <div class="company-work">資材搬入</div>
+          <div class="company-count"><strong>12</strong> 名</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

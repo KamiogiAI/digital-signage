@@ -1,0 +1,138 @@
+/* ===== 共通スタイル ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-color: #1a365d;
+  --secondary-color: #2c5282;
+  --accent-color: #3182ce;
+  --bg-color: #f7fafc;
+  --text-color: #1a202c;
+  --border-color: #e2e8f0;
+  --header-bg: #2d3748;
+  --row-even: #edf2f7;
+  --row-odd: #ffffff;
+}
+
+body {
+  font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'メイリオ', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  overflow: hidden;
+}
+
+/* ===== 縦置き (1080x1920) ===== */
+.screen-vertical {
+  width: 1080px;
+  height: 1920px;
+  background: var(--bg-color);
+}
+
+/* ===== 横置き (1920x1080) ===== */
+.screen-horizontal {
+  width: 1920px;
+  height: 1080px;
+  background: var(--bg-color);
+}
+
+/* ===== ヘッダー ===== */
+.header {
+  background: var(--header-bg);
+  color: white;
+  padding: 30px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header h1 {
+  font-size: 48px;
+  font-weight: 700;
+}
+
+.header .datetime {
+  font-size: 32px;
+  text-align: right;
+}
+
+.header .datetime .date {
+  font-size: 28px;
+  opacity: 0.9;
+}
+
+/* ===== テーブル共通 ===== */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th {
+  background: var(--primary-color);
+  color: white;
+  padding: 20px 15px;
+  font-size: 28px;
+  font-weight: 600;
+  text-align: center;
+  border: 2px solid var(--border-color);
+}
+
+.data-table td {
+  padding: 18px 15px;
+  font-size: 26px;
+  text-align: center;
+  border: 2px solid var(--border-color);
+}
+
+.data-table tr:nth-child(even) {
+  background: var(--row-even);
+}
+
+.data-table tr:nth-child(odd) {
+  background: var(--row-odd);
+}
+
+/* ===== コンテンツエリア ===== */
+.content {
+  padding: 30px;
+  height: calc(100% - 120px);
+  overflow: hidden;
+}
+
+/* ===== ステータスバッジ ===== */
+.status {
+  display: inline-block;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 22px;
+}
+
+.status-complete {
+  background: #c6f6d5;
+  color: #22543d;
+}
+
+.status-progress {
+  background: #feebc8;
+  color: #744210;
+}
+
+.status-pending {
+  background: #e2e8f0;
+  color: #4a5568;
+}
+
+/* ===== タッチモード用 ===== */
+.touch-mode .data-table td {
+  padding: 28px 20px;
+  font-size: 30px;
+}
+
+.touch-mode .touch-button {
+  min-height: 60px;
+  min-width: 120px;
+  font-size: 24px;
+}

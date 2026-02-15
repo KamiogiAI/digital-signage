@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>デジタルサイネージ モックアップ一覧</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', sans-serif;
+      background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+      min-height: 100vh;
+      padding: 40px;
+      color: white;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    h1 {
+      text-align: center;
+      font-size: 36px;
+      margin-bottom: 15px;
+      color: #68d391;
+    }
+    .subtitle {
+      text-align: center;
+      color: #a0aec0;
+      margin-bottom: 50px;
+      font-size: 18px;
+    }
+    .section {
+      margin-bottom: 50px;
+    }
+    .section-title {
+      font-size: 24px;
+      color: #fbd38d;
+      margin-bottom: 20px;
+      padding-left: 15px;
+      border-left: 4px solid #fbd38d;
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 25px;
+    }
+    .card {
+      background: #2d3748;
+      border-radius: 15px;
+      padding: 25px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: white;
+      display: block;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+    .card-icon {
+      font-size: 48px;
+      margin-bottom: 15px;
+    }
+    .card-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .card-desc {
+      color: #a0aec0;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .card-tag {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      margin-top: 15px;
+    }
+    .tag-vertical {
+      background: #9f7aea;
+      color: white;
+    }
+    .tag-horizontal {
+      background: #4299e1;
+      color: white;
+    }
+    .tag-pattern {
+      background: #ed8936;
+      color: white;
+    }
+    .note {
+      background: #4a5568;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 40px;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+    .note-title {
+      color: #68d391;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📺 デジタルサイネージ モックアップ</h1>
+    <p class="subtitle">井口様向け 画面デザイン案（静的モック）</p>
+
+    <div class="section">
+      <h2 class="section-title">縦置きモニター用（1080×1920）</h2>
+      <div class="card-grid">
+        <a href="screens/vertical/01_行動予定表.html" class="card">
+          <div class="card-icon">📋</div>
+          <div class="card-title">行動予定表</div>
+          <div class="card-desc">氏名・行先・使用車両・帰社予定時刻を一覧表示</div>
+          <span class="card-tag tag-vertical">縦置き 75インチ</span>
+        </a>
+        <a href="screens/vertical/02_施工サイクル表.html" class="card">
+          <div class="card-icon">🔄</div>
+          <div class="card-title">施工サイクル表</div>
+          <div class="card-desc">作業内容とステータス（完了/作業中/未着手）を表示</div>
+          <span class="card-tag tag-vertical">縦置き</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">横置きモニター用（1920×1080）</h2>
+      <div class="card-grid">
+        <a href="screens/horizontal/01_協力業者一覧.html" class="card">
+          <div class="card-icon">🏢</div>
+          <div class="card-title">協力業者作業一覧</div>
+          <div class="card-desc">当日入場の協力業者名・作業内容・人数をカード形式で表示</div>
+          <span class="card-tag tag-horizontal">横置き</span>
+        </a>
+        <a href="screens/horizontal/02_月間行事予定表.html" class="card">
+          <div class="card-icon">📅</div>
+          <div class="card-title">月間行事予定表</div>
+          <div class="card-desc">日付・曜日・行事予定をカレンダー形式で表示</div>
+          <span class="card-tag tag-horizontal">横置き 75インチ</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">ポスター表示方式（ご検討用）</h2>
+      <div class="card-grid">
+        <a href="screens/poster-patterns/pattern_A_フルスクリーン切替.html" class="card">
+          <div class="card-icon">🔀</div>
+          <div class="card-title">パターンA：フルスクリーン切替</div>
+          <div class="card-desc">表とポスターを交互に切り替えて表示。ポスターが大きく見やすい。</div>
+          <span class="card-tag tag-pattern">推奨</span>
+        </a>
+        <a href="screens/poster-patterns/pattern_B_分割表示.html" class="card">
+          <div class="card-icon">⬛</div>
+          <div class="card-title">パターンB：分割表示</div>
+          <div class="card-desc">画面を上下に分割し、表とポスターを同時表示。</div>
+          <span class="card-tag tag-pattern">オプション</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="note">
+      <div class="note-title">📝 ご確認のお願い</div>
+      <ul>
+        <li>各画面のレイアウト・配色・文字サイズについてご意見をお聞かせください</li>
+        <li>ポスター表示方式は パターンA（切替）/ パターンB（分割）のどちらがご希望に近いかご検討ください</li>
+        <li>表示項目の追加・変更があればお知らせください</li>
+        <li>本モックは静的なサンプルです。実際の操作機能は含まれていません</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>
