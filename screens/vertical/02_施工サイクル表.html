@@ -4,70 +4,133 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>施工サイクル表</title>
-  <link rel="stylesheet" href="../../css/common.css">
   <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', sans-serif;
+      background: #f7fafc;
+      width: 1080px;
+      height: 1920px;
+      overflow: hidden;
+    }
     .screen-vertical {
+      width: 1080px;
+      height: 1920px;
       transform: scale(0.5);
       transform-origin: top left;
+    }
+    /* ヘッダー - 余白なし */
+    .header {
+      background: linear-gradient(135deg, #1a365d 0%, #2d3748 100%);
+      color: white;
+      padding: 25px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header h1 {
+      font-size: 42px;
+      font-weight: 700;
+    }
+    .datetime {
+      text-align: right;
+    }
+    .datetime .time {
+      font-size: 48px;
+      font-weight: 700;
+    }
+    .datetime .date {
+      font-size: 22px;
+      opacity: 0.9;
+    }
+    /* 表 - ヘッダーに完全にくっつける */
+    .content {
+      background: #f7fafc;
+    }
+    /* タイトル行 */
+    .table-title {
+      background: #2d3748;
+      color: white;
+      text-align: center;
+      font-size: 36px;
+      font-weight: 700;
+      padding: 20px;
+      border-bottom: 3px solid #4a5568;
     }
     .cycle-table {
       width: 100%;
       border-collapse: collapse;
     }
     .cycle-table th {
-      background: var(--primary-color);
+      background: #4a5568;
       color: white;
-      padding: 20px 15px;
-      font-size: 28px;
+      padding: 18px 15px;
+      font-size: 26px;
       font-weight: 600;
       text-align: center;
-      border: 2px solid var(--border-color);
+      border: 2px solid #718096;
     }
+    .cycle-table th.status-col { width: 15%; }
+    .cycle-table th.no-col { width: 10%; }
+    .cycle-table th.content-col { width: 75%; }
     .cycle-table td {
-      padding: 20px 15px;
-      font-size: 24px;
-      border: 2px solid var(--border-color);
-      vertical-align: top;
+      padding: 22px 15px;
+      font-size: 26px;
+      border: 2px solid #e2e8f0;
+      vertical-align: middle;
     }
-    .cycle-table tr:nth-child(even) {
-      background: var(--row-even);
+    .cycle-table tr:nth-child(even) { background: #edf2f7; }
+    .cycle-table tr:nth-child(odd) { background: #ffffff; }
+    
+    /* ステータスセル */
+    .status-cell {
+      text-align: center;
     }
-    .cycle-table tr:nth-child(odd) {
-      background: var(--row-odd);
+    .status-icon {
+      font-size: 48px;
+      display: block;
+    }
+    /* 完了: チェックマーク */
+    .status-complete { color: #38a169; }
+    /* 作業中: 大きめの青い左矢印 */
+    .status-progress { 
+      color: #3182ce; 
+      font-size: 56px;
+      font-weight: 900;
+    }
+    /* 未着手: グレー丸 */
+    .status-pending { color: #a0aec0; }
+    /* 要確認: 赤ビックリ */
+    .status-warning { color: #e53e3e; }
+    /* ユーザー指定: 紫星 */
+    .status-custom { color: #9f7aea; }
+    
+    .no-cell {
+      text-align: center;
+      font-weight: 700;
+      font-size: 28px;
+      color: #2d3748;
+    }
+    .content-cell {
+      text-align: left;
+      padding-left: 25px;
     }
     .task-title {
       font-weight: 700;
       font-size: 28px;
-      color: var(--primary-color);
-      margin-bottom: 10px;
+      color: #1a365d;
+      margin-bottom: 8px;
     }
     .task-content {
       font-size: 22px;
-      line-height: 1.6;
       color: #4a5568;
-    }
-    .status-cell {
-      text-align: center;
-      vertical-align: middle;
-    }
-    .status-icon {
-      font-size: 48px;
-    }
-    .status-icon.complete { color: #38a169; }
-    .status-icon.progress { color: #d69e2e; }
-    .status-icon.pending { color: #a0aec0; }
-    .status-icon.warning { color: #e53e3e; }
-    .status-label {
-      font-size: 20px;
-      margin-top: 8px;
-      font-weight: 600;
     }
   </style>
 </head>
 <body>
   <div class="screen-vertical">
     <header class="header">
-      <h1> 施工サイクル表</h1>
+      <h1>施工サイクル表</h1>
       <div class="datetime">
         <div class="time">14:35</div>
         <div class="date">2026年2月15日（土）</div>
@@ -75,92 +138,88 @@
     </header>
     
     <div class="content">
+      <!-- タイトル行（中央揃え・1列） -->
+      <div class="table-title">本日の施工サイクル</div>
+      
       <table class="cycle-table">
         <thead>
           <tr>
-            <th style="width: 75%">作業内容</th>
-            <th style="width: 25%">ステータス</th>
+            <th class="status-col">ステータス</th>
+            <th class="no-col">No</th>
+            <th class="content-col">作業内容</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>
-              <div class="task-title">1. 朝礼・KY活動</div>
+            <td class="status-cell"><span class="status-icon status-complete">✓</span></td>
+            <td class="no-cell">1</td>
+            <td class="content-cell">
+              <div class="task-title">朝礼・KY活動</div>
               <div class="task-content">全員参加による朝礼、危険予知活動の実施</div>
             </td>
-            <td class="status-cell">
-              <div class="status-icon complete">✓</div>
-              <div class="status-label">完了</div>
-            </td>
           </tr>
           <tr>
-            <td>
-              <div class="task-title">2. 足場組立</div>
+            <td class="status-cell"><span class="status-icon status-complete">✓</span></td>
+            <td class="no-cell">2</td>
+            <td class="content-cell">
+              <div class="task-title">足場組立</div>
               <div class="task-content">A棟東側 3F〜5F 外部足場の組立作業</div>
             </td>
-            <td class="status-cell">
-              <div class="status-icon complete">✓</div>
-              <div class="status-label">完了</div>
-            </td>
           </tr>
           <tr>
-            <td>
-              <div class="task-title">3. 鉄筋組立</div>
+            <td class="status-cell"><span class="status-icon status-progress">◀</span></td>
+            <td class="no-cell">3</td>
+            <td class="content-cell">
+              <div class="task-title">鉄筋組立</div>
               <div class="task-content">B棟基礎部分 配筋作業（D13, D16）</div>
             </td>
-            <td class="status-cell">
-              <div class="status-icon progress">◐</div>
-              <div class="status-label">作業中</div>
-            </td>
           </tr>
           <tr>
-            <td>
-              <div class="task-title">4. 型枠建込</div>
+            <td class="status-cell"><span class="status-icon status-pending">○</span></td>
+            <td class="no-cell">4</td>
+            <td class="content-cell">
+              <div class="task-title">型枠建込</div>
               <div class="task-content">A棟 2F スラブ型枠の建込作業</div>
             </td>
-            <td class="status-cell">
-              <div class="status-icon pending">○</div>
-              <div class="status-label">未着手</div>
-            </td>
           </tr>
           <tr>
-            <td>
-              <div class="task-title">5. コンクリート打設</div>
+            <td class="status-cell"><span class="status-icon status-pending">○</span></td>
+            <td class="no-cell">5</td>
+            <td class="content-cell">
+              <div class="task-title">コンクリート打設</div>
               <div class="task-content">A棟 1F 壁・柱部分 コンクリート打設</div>
             </td>
-            <td class="status-cell">
-              <div class="status-icon pending">○</div>
-              <div class="status-label">未着手</div>
-            </td>
           </tr>
           <tr>
-            <td>
-              <div class="task-title">6. 設備配管</div>
+            <td class="status-cell"><span class="status-icon status-warning">!</span></td>
+            <td class="no-cell">6</td>
+            <td class="content-cell">
+              <div class="task-title">設備配管</div>
               <div class="task-content">B棟 給排水配管ルート確認・墨出し</div>
             </td>
-            <td class="status-cell">
-              <div class="status-icon warning">!</div>
-              <div class="status-label">要確認</div>
+          </tr>
+          <tr>
+            <td class="status-cell"><span class="status-icon status-custom">★</span></td>
+            <td class="no-cell">7</td>
+            <td class="content-cell">
+              <div class="task-title">安全パトロール</div>
+              <div class="task-content">13:00〜 安全管理者による巡回点検</div>
             </td>
           </tr>
           <tr>
-            <td>
-              <div class="task-title">7. 片付け・清掃</div>
+            <td class="status-cell"><span class="status-icon status-pending">○</span></td>
+            <td class="no-cell">8</td>
+            <td class="content-cell">
+              <div class="task-title">片付け・清掃</div>
               <div class="task-content">作業エリア周辺の整理整頓・清掃</div>
             </td>
-            <td class="status-cell">
-              <div class="status-icon pending">○</div>
-              <div class="status-label">未着手</div>
-            </td>
           </tr>
           <tr>
-            <td>
-              <div class="task-title">8. 終礼・翌日準備</div>
+            <td class="status-cell"><span class="status-icon status-pending">○</span></td>
+            <td class="no-cell">9</td>
+            <td class="content-cell">
+              <div class="task-title">終礼・翌日準備</div>
               <div class="task-content">本日の振り返り、翌日作業の確認</div>
-            </td>
-            <td class="status-cell">
-              <div class="status-icon pending">○</div>
-              <div class="status-label">未着手</div>
             </td>
           </tr>
         </tbody>

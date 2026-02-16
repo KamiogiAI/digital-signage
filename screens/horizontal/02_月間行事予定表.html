@@ -3,182 +3,336 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>月間行事予定表</title>
-  <link rel="stylesheet" href="../../css/common.css">
+  <title>月行事予定表</title>
   <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', sans-serif;
+      background: #f7fafc;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+    }
     .screen-horizontal {
+      width: 1920px;
+      height: 1080px;
       transform: scale(0.5);
       transform-origin: top left;
+      display: flex;
     }
-    .month-header {
-      background: var(--secondary-color);
+    
+    /* 左側: 大きなタイトル（縦書き） */
+    .title-area {
+      width: 120px;
+      background: linear-gradient(180deg, #1a365d 0%, #2d3748 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      writing-mode: vertical-rl;
+      text-orientation: upright;
+    }
+    .title-area h1 {
+      font-size: 64px;
+      font-weight: 900;
       color: white;
-      padding: 15px 40px;
-      font-size: 36px;
+      letter-spacing: 15px;
+    }
+    .title-area .month {
+      font-size: 48px;
+      color: #68d391;
+      margin-top: 30px;
+    }
+    
+    /* 中央: カレンダー本体 */
+    .calendar-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* 年月ヘッダー */
+    .month-header {
+      background: #2d3748;
+      color: white;
+      padding: 12px 30px;
+      font-size: 28px;
       font-weight: 700;
-      text-align: center;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .datetime {
+      font-size: 22px;
+    }
+    
+    /* カレンダーテーブル（縦書き風 - 横スクロール） */
+    .calendar-container {
+      flex: 1;
+      overflow: hidden;
     }
     .calendar-table {
       width: 100%;
+      height: 100%;
       border-collapse: collapse;
       table-layout: fixed;
     }
-    .calendar-table th {
-      background: var(--primary-color);
-      color: white;
-      padding: 15px 10px;
-      font-size: 24px;
-      font-weight: 600;
-      text-align: center;
-      border: 2px solid var(--border-color);
-      width: 8%;
-    }
-    .calendar-table th:last-child {
-      width: 44%;
-    }
+    .calendar-table th,
     .calendar-table td {
-      padding: 12px 10px;
-      font-size: 22px;
-      border: 2px solid var(--border-color);
-      vertical-align: top;
+      border: 2px solid #cbd5e0;
+      text-align: center;
+      vertical-align: middle;
     }
-    .calendar-table tr:nth-child(even) {
-      background: var(--row-even);
-    }
-    .calendar-table tr:nth-child(odd) {
-      background: var(--row-odd);
+    
+    /* 日付行（横に並ぶ） */
+    .row-label {
+      background: #4a5568;
+      color: white;
+      font-size: 20px;
+      font-weight: 600;
+      width: 60px;
     }
     .day-cell {
-      text-align: center;
+      background: #edf2f7;
+      font-size: 32px;
       font-weight: 700;
-      font-size: 28px;
+      color: #1a365d;
+      height: 60px;
     }
+    .day-cell.today {
+      background: #fefcbf;
+      color: #d69e2e;
+    }
+    .day-cell.sun { color: #e53e3e; }
+    .day-cell.sat { color: #3182ce; }
+    
+    /* 曜日行 */
     .dow-cell {
-      text-align: center;
       font-size: 22px;
+      font-weight: 600;
+      height: 50px;
+      background: #f7fafc;
     }
-    .dow-sat { color: #3182ce; }
-    .dow-sun { color: #e53e3e; }
+    .dow-cell.sun { color: #e53e3e; background: #fed7d7; }
+    .dow-cell.sat { color: #3182ce; background: #bee3f8; }
+    
+    /* 記事行（縦長） */
     .event-cell {
-      font-size: 22px;
-      line-height: 1.5;
-    }
-    .event-tag {
-      display: inline-block;
-      padding: 3px 10px;
-      border-radius: 8px;
       font-size: 18px;
-      margin-right: 8px;
+      padding: 10px 5px;
+      vertical-align: top;
+      text-align: left;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      height: 400px;
+      background: white;
+      line-height: 1.6;
+    }
+    .event-cell .event-tag {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 5px;
+      font-size: 14px;
+      margin-bottom: 5px;
     }
     .event-important { background: #fed7d7; color: #c53030; }
     .event-meeting { background: #c6f6d5; color: #22543d; }
     .event-work { background: #bee3f8; color: #2b6cb0; }
     .event-holiday { background: #feebc8; color: #c05621; }
-    .today-row {
-      background: #fefcbf !important;
-      border-left: 5px solid #d69e2e;
+    
+    /* 右側: 備考欄・ポスターエリア */
+    .sidebar {
+      width: 280px;
+      background: #2d3748;
+      display: flex;
+      flex-direction: column;
     }
+    .sidebar-header {
+      background: #1a365d;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 22px;
+      font-weight: 700;
+      writing-mode: vertical-rl;
+      text-orientation: upright;
+      letter-spacing: 8px;
+    }
+    .sidebar-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .notes-area {
+      padding: 15px;
+      color: white;
+      font-size: 16px;
+      border-bottom: 2px solid #4a5568;
+    }
+    .notes-title {
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #fbd38d;
+    }
+    .notes-list {
+      line-height: 1.8;
+    }
+    .poster-area {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 15px;
+    }
+    .poster-placeholder {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+    .poster-placeholder .icon { font-size: 48px; margin-bottom: 10px; }
+    .poster-placeholder .text { font-size: 18px; }
   </style>
 </head>
 <body>
   <div class="screen-horizontal">
-    <header class="header">
-      <h1> 月間行事予定表</h1>
-      <div class="datetime">
-        <div class="time">14:35</div>
-        <div class="date">2026年2月15日（土）</div>
+    <!-- 左: タイトル（縦書き） -->
+    <div class="title-area">
+      <h1>月行事予定表</h1>
+    </div>
+    
+    <!-- 中央: カレンダー -->
+    <div class="calendar-area">
+      <div class="month-header">
+        <span>2026年 2月</span>
+        <span class="datetime">14:35 更新</span>
       </div>
-    </header>
-    
-    <div class="month-header">2026年 2月</div>
-    
-    <div class="content" style="padding: 15px 30px; height: auto;">
-      <table class="calendar-table">
-        <thead>
+      
+      <div class="calendar-container">
+        <table class="calendar-table">
+          <!-- 日付行 -->
           <tr>
-            <th>日</th>
-            <th>曜日</th>
-            <th>行事・予定</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="day-cell">1</td>
-            <td class="dow-cell dow-sun">日</td>
-            <td class="event-cell"><span class="event-holiday">休日</span></td>
-          </tr>
-          <tr>
+            <th class="row-label">日</th>
+            <td class="day-cell sun">1</td>
             <td class="day-cell">2</td>
-            <td class="dow-cell">月</td>
-            <td class="event-cell"><span class="event-meeting">定例</span>週次定例会議 10:00〜</td>
-          </tr>
-          <tr>
             <td class="day-cell">3</td>
-            <td class="dow-cell">火</td>
-            <td class="event-cell"><span class="event-work">作業</span>A棟 2F コンクリート打設</td>
-          </tr>
-          <tr>
             <td class="day-cell">4</td>
-            <td class="dow-cell">水</td>
-            <td class="event-cell"></td>
-          </tr>
-          <tr>
             <td class="day-cell">5</td>
-            <td class="dow-cell">木</td>
-            <td class="event-cell"><span class="event-important">重要</span>安全パトロール 13:00〜</td>
-          </tr>
-          <tr>
             <td class="day-cell">6</td>
-            <td class="dow-cell">金</td>
-            <td class="event-cell"></td>
-          </tr>
-          <tr>
-            <td class="day-cell">7</td>
-            <td class="dow-cell dow-sat">土</td>
-            <td class="event-cell"><span class="event-work">作業</span>資材搬入（鉄骨）</td>
-          </tr>
-          <tr>
-            <td class="day-cell">8</td>
-            <td class="dow-cell dow-sun">日</td>
-            <td class="event-cell"><span class="event-holiday">休日</span></td>
-          </tr>
-          <tr>
+            <td class="day-cell sat">7</td>
+            <td class="day-cell sun">8</td>
             <td class="day-cell">9</td>
-            <td class="dow-cell">月</td>
-            <td class="event-cell"><span class="event-meeting">定例</span>週次定例会議 10:00〜</td>
-          </tr>
-          <tr>
             <td class="day-cell">10</td>
-            <td class="dow-cell">火</td>
-            <td class="event-cell"><span class="event-important">重要</span>発注者検査 午前</td>
-          </tr>
-          <tr>
             <td class="day-cell">11</td>
-            <td class="dow-cell">水</td>
-            <td class="event-cell"><span class="event-holiday">祝日</span>建国記念の日</td>
-          </tr>
-          <tr>
             <td class="day-cell">12</td>
-            <td class="dow-cell">木</td>
-            <td class="event-cell"><span class="event-work">作業</span>B棟 基礎配筋検査</td>
-          </tr>
-          <tr>
             <td class="day-cell">13</td>
-            <td class="dow-cell">金</td>
-            <td class="event-cell"></td>
+            <td class="day-cell sat">14</td>
+            <td class="day-cell sun today">15</td>
+            <td class="day-cell">16</td>
+            <td class="day-cell">17</td>
+            <td class="day-cell">18</td>
+            <td class="day-cell">19</td>
+            <td class="day-cell">20</td>
+            <td class="day-cell sat">21</td>
+            <td class="day-cell sun">22</td>
+            <td class="day-cell">23</td>
+            <td class="day-cell">24</td>
+            <td class="day-cell">25</td>
+            <td class="day-cell">26</td>
+            <td class="day-cell">27</td>
+            <td class="day-cell sat">28</td>
           </tr>
+          <!-- 曜日行 -->
           <tr>
-            <td class="day-cell">14</td>
-            <td class="dow-cell dow-sat">土</td>
+            <th class="row-label">曜日</th>
+            <td class="dow-cell sun">日</td>
+            <td class="dow-cell">月</td>
+            <td class="dow-cell">火</td>
+            <td class="dow-cell">水</td>
+            <td class="dow-cell">木</td>
+            <td class="dow-cell">金</td>
+            <td class="dow-cell sat">土</td>
+            <td class="dow-cell sun">日</td>
+            <td class="dow-cell">月</td>
+            <td class="dow-cell">火</td>
+            <td class="dow-cell">水</td>
+            <td class="dow-cell">木</td>
+            <td class="dow-cell">金</td>
+            <td class="dow-cell sat">土</td>
+            <td class="dow-cell sun">日</td>
+            <td class="dow-cell">月</td>
+            <td class="dow-cell">火</td>
+            <td class="dow-cell">水</td>
+            <td class="dow-cell">木</td>
+            <td class="dow-cell">金</td>
+            <td class="dow-cell sat">土</td>
+            <td class="dow-cell sun">日</td>
+            <td class="dow-cell">月</td>
+            <td class="dow-cell">火</td>
+            <td class="dow-cell">水</td>
+            <td class="dow-cell">木</td>
+            <td class="dow-cell">金</td>
+            <td class="dow-cell sat">土</td>
+          </tr>
+          <!-- 記事行（縦長） -->
+          <tr>
+            <th class="row-label">記事</th>
+            <td class="event-cell"><span class="event-tag event-holiday">休日</span></td>
+            <td class="event-cell"><span class="event-tag event-meeting">定例</span>週次定例会議</td>
+            <td class="event-cell"><span class="event-tag event-work">作業</span>A棟コンクリート打設</td>
+            <td class="event-cell"></td>
+            <td class="event-cell"><span class="event-tag event-important">重要</span>安全パトロール</td>
+            <td class="event-cell"></td>
+            <td class="event-cell"><span class="event-tag event-work">作業</span>資材搬入</td>
+            <td class="event-cell"><span class="event-tag event-holiday">休日</span></td>
+            <td class="event-cell"><span class="event-tag event-meeting">定例</span>週次定例会議</td>
+            <td class="event-cell"><span class="event-tag event-important">重要</span>発注者検査</td>
+            <td class="event-cell"><span class="event-tag event-holiday">祝日</span>建国記念の日</td>
+            <td class="event-cell"><span class="event-tag event-work">作業</span>配筋検査</td>
+            <td class="event-cell"></td>
+            <td class="event-cell"></td>
+            <td class="event-cell"><span class="event-tag event-holiday">休日</span>本日</td>
+            <td class="event-cell"><span class="event-tag event-meeting">定例</span>週次定例会議</td>
+            <td class="event-cell"></td>
+            <td class="event-cell"></td>
+            <td class="event-cell"><span class="event-tag event-work">作業</span>B棟躯体工事</td>
+            <td class="event-cell"></td>
+            <td class="event-cell"></td>
+            <td class="event-cell"><span class="event-tag event-holiday">休日</span></td>
+            <td class="event-cell"><span class="event-tag event-meeting">定例</span>週次定例会議</td>
+            <td class="event-cell"><span class="event-tag event-important">重要</span>月末検査</td>
+            <td class="event-cell"></td>
+            <td class="event-cell"></td>
+            <td class="event-cell"></td>
             <td class="event-cell"></td>
           </tr>
-          <tr class="today-row">
-            <td class="day-cell">15</td>
-            <td class="dow-cell dow-sun">日</td>
-            <td class="event-cell"><span class="event-holiday">休日</span>← 本日</td>
-          </tr>
-        </tbody>
-      </table>
+        </table>
+      </div>
+    </div>
+    
+    <!-- 右: 備考欄・ポスターエリア -->
+    <div class="sidebar">
+      <div class="sidebar-content">
+        <div class="notes-area">
+          <div class="notes-title">備考</div>
+          <div class="notes-list">
+            ・2/10 発注者検査<br>
+            ・2/11 祝日（建国記念の日）<br>
+            ・2/24 月末検査<br>
+            ・安全週間実施中
+          </div>
+        </div>
+        <div class="poster-area">
+          <div class="poster-placeholder">
+            <div class="icon"></div>
+            <div class="text">ポスター<br>エリア</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </body>

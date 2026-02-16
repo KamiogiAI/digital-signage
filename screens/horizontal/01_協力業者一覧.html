@@ -4,73 +4,174 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>協力業者作業一覧</title>
-  <link rel="stylesheet" href="../../css/common.css">
   <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', sans-serif;
+      background: #f7fafc;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+    }
     .screen-horizontal {
+      width: 1920px;
+      height: 1080px;
       transform: scale(0.5);
       transform-origin: top left;
     }
-    .company-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-      padding: 20px;
-    }
-    .company-card {
-      background: white;
-      border: 3px solid var(--border-color);
-      border-radius: 15px;
-      padding: 30px 20px;
-      text-align: center;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      transition: transform 0.2s;
-    }
-    .company-card:hover {
-      transform: scale(1.02);
-    }
-    .company-name {
-      font-size: 32px;
-      font-weight: 700;
-      color: var(--primary-color);
-      margin-bottom: 15px;
-    }
-    .company-work {
-      font-size: 22px;
-      color: #4a5568;
-      margin-bottom: 10px;
-    }
-    .company-count {
-      font-size: 20px;
-      color: #718096;
-    }
-    .company-count strong {
-      font-size: 28px;
-      color: var(--accent-color);
-    }
-    .summary-bar {
-      background: var(--secondary-color);
+    /* ヘッダー - 余白なし */
+    .header {
+      background: linear-gradient(135deg, #1a365d 0%, #2d3748 100%);
       color: white;
       padding: 20px 40px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 28px;
+    }
+    .header h1 {
+      font-size: 38px;
+      font-weight: 700;
+    }
+    .datetime {
+      text-align: right;
+    }
+    .datetime .time {
+      font-size: 42px;
+      font-weight: 700;
+    }
+    .datetime .date {
+      font-size: 20px;
+      opacity: 0.9;
+    }
+    /* サマリーバー - ヘッダーに直接くっつける */
+    .summary-bar {
+      background: #2d3748;
+      color: white;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 24px;
     }
     .summary-item {
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: 12px;
     }
     .summary-number {
-      font-size: 42px;
+      font-size: 38px;
       font-weight: 700;
+      color: #68d391;
+    }
+    /* コンテンツ - 余白なし */
+    .content {
+      padding: 20px 30px;
+      height: calc(100% - 160px);
+    }
+    .company-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      height: 100%;
+      align-content: start;
+    }
+    /* マグネットカード */
+    .company-card {
+      border-radius: 12px;
+      padding: 25px 20px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      transition: transform 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .company-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 8px;
+    }
+    .company-card:hover {
+      transform: scale(1.02);
+    }
+    
+    /* マグネット色バリエーション */
+    .magnet-blue {
+      background: linear-gradient(180deg, #e6f3ff 0%, #cce5ff 100%);
+      border: 3px solid #3182ce;
+    }
+    .magnet-blue::before { background: #3182ce; }
+    
+    .magnet-lightblue {
+      background: linear-gradient(180deg, #e0f7fa 0%, #b2ebf2 100%);
+      border: 3px solid #00acc1;
+    }
+    .magnet-lightblue::before { background: #00acc1; }
+    
+    .magnet-red {
+      background: linear-gradient(180deg, #ffebee 0%, #ffcdd2 100%);
+      border: 3px solid #e53e3e;
+    }
+    .magnet-red::before { background: #e53e3e; }
+    
+    .magnet-green {
+      background: linear-gradient(180deg, #e8f5e9 0%, #c8e6c9 100%);
+      border: 3px solid #38a169;
+    }
+    .magnet-green::before { background: #38a169; }
+    
+    .magnet-yellow {
+      background: linear-gradient(180deg, #fffde7 0%, #fff9c4 100%);
+      border: 3px solid #d69e2e;
+    }
+    .magnet-yellow::before { background: #d69e2e; }
+    
+    .magnet-orange {
+      background: linear-gradient(180deg, #fff3e0 0%, #ffe0b2 100%);
+      border: 3px solid #dd6b20;
+    }
+    .magnet-orange::before { background: #dd6b20; }
+    
+    .magnet-purple {
+      background: linear-gradient(180deg, #f3e5f5 0%, #e1bee7 100%);
+      border: 3px solid #9f7aea;
+    }
+    .magnet-purple::before { background: #9f7aea; }
+    
+    .magnet-pink {
+      background: linear-gradient(180deg, #fce4ec 0%, #f8bbd9 100%);
+      border: 3px solid #d53f8c;
+    }
+    .magnet-pink::before { background: #d53f8c; }
+    
+    .company-name {
+      font-size: 28px;
+      font-weight: 700;
+      color: #1a365d;
+      margin-bottom: 12px;
+      margin-top: 5px;
+    }
+    .company-work {
+      font-size: 20px;
+      color: #4a5568;
+      margin-bottom: 8px;
+    }
+    .company-count {
+      font-size: 18px;
+      color: #718096;
+    }
+    .company-count strong {
+      font-size: 26px;
+      color: #2d3748;
     }
   </style>
 </head>
 <body>
   <div class="screen-horizontal">
     <header class="header">
-      <h1> 本日の協力業者</h1>
+      <h1>本日の協力業者</h1>
       <div class="datetime">
         <div class="time">14:35</div>
         <div class="date">2026年2月15日（土）</div>
@@ -90,44 +191,44 @@
       </div>
     </div>
     
-    <div class="content" style="padding-top: 30px;">
+    <div class="content">
       <div class="company-grid">
-        <div class="company-card">
+        <div class="company-card magnet-blue">
           <div class="company-name">（株）山田組</div>
           <div class="company-work">足場組立</div>
           <div class="company-count"><strong>8</strong> 名</div>
         </div>
-        <div class="company-card">
+        <div class="company-card magnet-lightblue">
           <div class="company-name">鈴木建設（株）</div>
           <div class="company-work">鉄筋工事</div>
           <div class="company-count"><strong>6</strong> 名</div>
         </div>
-        <div class="company-card">
+        <div class="company-card magnet-red">
           <div class="company-name">（有）佐藤工業</div>
           <div class="company-work">型枠工事</div>
           <div class="company-count"><strong>5</strong> 名</div>
         </div>
-        <div class="company-card">
+        <div class="company-card magnet-green">
           <div class="company-name">田中設備（株）</div>
           <div class="company-work">設備配管</div>
           <div class="company-count"><strong>4</strong> 名</div>
         </div>
-        <div class="company-card">
+        <div class="company-card magnet-yellow">
           <div class="company-name">（株）高橋電工</div>
           <div class="company-work">電気工事</div>
           <div class="company-count"><strong>6</strong> 名</div>
         </div>
-        <div class="company-card">
+        <div class="company-card magnet-orange">
           <div class="company-name">伊藤塗装（株）</div>
           <div class="company-work">塗装工事</div>
           <div class="company-count"><strong>4</strong> 名</div>
         </div>
-        <div class="company-card">
+        <div class="company-card magnet-purple">
           <div class="company-name">（株）中村重機</div>
           <div class="company-work">重機オペ</div>
           <div class="company-count"><strong>2</strong> 名</div>
         </div>
-        <div class="company-card">
+        <div class="company-card magnet-pink">
           <div class="company-name">小林運輸（株）</div>
           <div class="company-work">資材搬入</div>
           <div class="company-count"><strong>12</strong> 名</div>

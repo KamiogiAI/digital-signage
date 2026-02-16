@@ -4,23 +4,91 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>行動予定表</title>
-  <link rel="stylesheet" href="../../css/common.css">
   <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', sans-serif;
+      background: #f7fafc;
+      width: 1080px;
+      height: 1920px;
+      overflow: hidden;
+    }
     .screen-vertical {
+      width: 1080px;
+      height: 1920px;
       transform: scale(0.5);
       transform-origin: top left;
+    }
+    /* ヘッダー - 余白なし */
+    .header {
+      background: linear-gradient(135deg, #1a365d 0%, #2d3748 100%);
+      color: white;
+      padding: 25px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header h1 {
+      font-size: 42px;
+      font-weight: 700;
+    }
+    .datetime {
+      text-align: right;
+    }
+    .datetime .time {
+      font-size: 48px;
+      font-weight: 700;
+    }
+    .datetime .date {
+      font-size: 22px;
+      opacity: 0.9;
+    }
+    /* 表 - ヘッダーに完全にくっつける（余白なし） */
+    .content {
+      background: #f7fafc;
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .data-table th {
+      background: #2d3748;
+      color: white;
+      padding: 20px 15px;
+      font-size: 26px;
+      font-weight: 600;
+      text-align: center;
+      border: 2px solid #4a5568;
+    }
+    .data-table td {
+      padding: 22px 15px;
+      font-size: 26px;
+      border: 2px solid #e2e8f0;
+      vertical-align: middle;
+    }
+    .data-table tr:nth-child(even) {
+      background: #edf2f7;
+    }
+    .data-table tr:nth-child(odd) {
+      background: #ffffff;
     }
     .data-table td.name {
       font-weight: 600;
       font-size: 32px;
+      text-align: center;
     }
     .data-table td.destination {
       text-align: left;
       padding-left: 25px;
     }
+    .data-table td.vehicle {
+      text-align: center;
+      font-size: 22px;
+    }
     .data-table td.time {
       font-size: 30px;
       font-weight: 500;
+      text-align: center;
     }
     .out-badge {
       background: #e53e3e;
@@ -30,12 +98,19 @@
       font-size: 20px;
       margin-left: 10px;
     }
+    .in-badge {
+      background: #38a169;
+      color: white;
+      padding: 5px 15px;
+      border-radius: 15px;
+      font-size: 20px;
+    }
   </style>
 </head>
 <body>
   <div class="screen-vertical">
     <header class="header">
-      <h1> 行動予定表</h1>
+      <h1>行動予定表</h1>
       <div class="datetime">
         <div class="time">14:35</div>
         <div class="date">2026年2月15日（土）</div>
@@ -56,73 +131,73 @@
           <tr>
             <td class="name">山田 太郎</td>
             <td class="destination">○○建設 現場事務所</td>
-            <td>品川 300 あ 1234</td>
+            <td class="vehicle">品川 300 あ 1234</td>
             <td class="time">16:00</td>
           </tr>
           <tr>
             <td class="name">佐藤 花子</td>
             <td class="destination">△△工業 打合せ</td>
-            <td>品川 500 い 5678</td>
+            <td class="vehicle">品川 500 い 5678</td>
             <td class="time">15:30</td>
           </tr>
           <tr>
             <td class="name">鈴木 一郎</td>
             <td class="destination">□□商事 資材搬入立会</td>
-            <td>品川 300 う 9012</td>
+            <td class="vehicle">品川 300 う 9012</td>
             <td class="time">17:00</td>
           </tr>
           <tr>
             <td class="name">田中 次郎</td>
             <td class="destination">市役所 申請手続き</td>
-            <td>—</td>
+            <td class="vehicle">—</td>
             <td class="time">14:00</td>
           </tr>
           <tr>
             <td class="name">高橋 美咲</td>
             <td class="destination">◇◇設計 図面確認</td>
-            <td>品川 300 え 3456</td>
+            <td class="vehicle">品川 300 え 3456</td>
             <td class="time">16:30</td>
           </tr>
           <tr>
             <td class="name">伊藤 健太</td>
             <td class="destination">現場A棟 施工管理</td>
-            <td>—</td>
+            <td class="vehicle">—</td>
             <td class="time">18:00</td>
           </tr>
           <tr>
             <td class="name">渡辺 裕子</td>
             <td class="destination">本社 会議出席</td>
-            <td>品川 500 お 7890</td>
+            <td class="vehicle">品川 500 お 7890</td>
             <td class="time">15:00</td>
           </tr>
           <tr>
             <td class="name">中村 大輔</td>
-            <td class="destination">在席<span class="out-badge">外出中</span></td>
-            <td>—</td>
+            <td class="destination"><span class="in-badge">在席</span></td>
+            <td class="vehicle">—</td>
             <td class="time">—</td>
           </tr>
           <tr>
             <td class="name">小林 恵子</td>
             <td class="destination">◎◎電気 配線確認</td>
-            <td>品川 300 か 1122</td>
+            <td class="vehicle">品川 300 か 1122</td>
             <td class="time">16:00</td>
           </tr>
           <tr>
             <td class="name">加藤 誠</td>
-            <td class="destination">在席</td>
-            <td>—</td>
+            <td class="destination"><span class="in-badge">在席</span></td>
+            <td class="vehicle">—</td>
             <td class="time">—</td>
           </tr>
           <tr>
             <td class="name">吉田 真理</td>
             <td class="destination">銀行 振込手続き</td>
-            <td>—</td>
+            <td class="vehicle">—</td>
             <td class="time">14:30</td>
           </tr>
           <tr>
             <td class="name">松本 隆</td>
-            <td class="destination">在席</td>
-            <td>—</td>
+            <td class="destination"><span class="in-badge">在席</span></td>
+            <td class="vehicle">—</td>
             <td class="time">—</td>
           </tr>
         </tbody>
