@@ -20,6 +20,54 @@ def set_cell_shading(cell, color):
     shading.set(qn('w:fill'), color)
     cell._tc.get_or_add_tcPr().append(shading)
 
+def add_heading1(doc, text):
+    """カスタム見出し1（デフォルトスタイル不使用）"""
+    p = doc.add_paragraph()
+    p.paragraph_format.space_before = Pt(24)
+    p.paragraph_format.space_after = Pt(12)
+    run = p.add_run(text)
+    run.font.size = Pt(24)
+    run.font.bold = True
+    run.font.color.rgb = RGBColor(26, 54, 93)
+    run.font.name = 'メイリオ'
+    run._element.rPr.rFonts.set(qn('w:eastAsia'), 'メイリオ')
+    return p
+
+def add_heading2(doc, text):
+    """カスタム見出し2（デフォルトスタイル不使用）"""
+    p = doc.add_paragraph()
+    p.paragraph_format.space_before = Pt(18)
+    p.paragraph_format.space_after = Pt(8)
+    run = p.add_run(text)
+    run.font.size = Pt(18)
+    run.font.bold = True
+    run.font.color.rgb = RGBColor(49, 130, 206)
+    run.font.name = 'メイリオ'
+    run._element.rPr.rFonts.set(qn('w:eastAsia'), 'メイリオ')
+    return p
+
+def add_heading3(doc, text):
+    """カスタム見出し3（デフォルトスタイル不使用）"""
+    p = doc.add_paragraph()
+    p.paragraph_format.space_before = Pt(12)
+    p.paragraph_format.space_after = Pt(6)
+    run = p.add_run(text)
+    run.font.size = Pt(14)
+    run.font.bold = True
+    run.font.color.rgb = RGBColor(45, 55, 72)
+    run.font.name = 'メイリオ'
+    run._element.rPr.rFonts.set(qn('w:eastAsia'), 'メイリオ')
+    return p
+
+def add_bullet(doc, text):
+    """箇条書き（中点不使用）"""
+    p = doc.add_paragraph()
+    p.paragraph_format.left_indent = Pt(20)
+    run = p.add_run('- ' + text)
+    run.font.name = 'メイリオ'
+    run._element.rPr.rFonts.set(qn('w:eastAsia'), 'メイリオ')
+    return p
+
 def add_horizontal_line(doc):
     """水平線を追加"""
     p = doc.add_paragraph()
@@ -86,8 +134,7 @@ def create_spec_document():
     doc.add_page_break()
     
     # ===== 目次 =====
-    h = doc.add_heading('目次', level=1)
-    h.runs[0].font.color.rgb = RGBColor(26, 54, 93)
+    add_heading1(doc, '目次')
     
     toc_items = [
         '1. プロジェクト概要',
@@ -112,19 +159,16 @@ def create_spec_document():
     doc.add_page_break()
     
     # ===== 1. プロジェクト概要 =====
-    h = doc.add_heading('1. プロジェクト概要', level=1)
-    h.runs[0].font.color.rgb = RGBColor(26, 54, 93)
+    add_heading1(doc, '1. プロジェクト概要')
     
-    h2 = doc.add_heading('1.1 目的', level=2)
-    h2.runs[0].font.color.rgb = RGBColor(49, 130, 206)
+    add_heading2(doc, '1.1 目的')
     
     doc.add_paragraph(
         '現場事務所内に設置されたモニターで、行動予定、協力業者、月間予定、施工サイクル等の'
         '情報をデジタル表示するサイネージシステムを構築します。'
     )
     
-    h2 = doc.add_heading('1.2 システム特性', level=2)
-    h2.runs[0].font.color.rgb = RGBColor(49, 130, 206)
+    add_heading2(doc, '1.2 システム特性')
     
     table = doc.add_table(rows=4, cols=2)
     table.style = 'Table Grid'
@@ -150,24 +194,21 @@ def create_spec_document():
     
     doc.add_paragraph()
     
-    h2 = doc.add_heading('1.3 制約事項', level=2)
-    h2.runs[0].font.color.rgb = RGBColor(49, 130, 206)
+    add_heading2(doc, '1.3 制約事項')
     
     constraints = [
         '天気予報等の外部API連携は不可',
         '縦置きモニターと横置きモニターの表を同一サイクルに混在させることは不可',
     ]
     for c in constraints:
-        p = doc.add_paragraph(c, style='List Bullet')
+        add_bullet(doc, c)
     
     doc.add_page_break()
     
     # ===== 2. システム構成 =====
-    h = doc.add_heading('2. システム構成', level=1)
-    h.runs[0].font.color.rgb = RGBColor(26, 54, 93)
+    add_heading1(doc, '2. システム構成')
     
-    h2 = doc.add_heading('2.1 技術スタック', level=2)
-    h2.runs[0].font.color.rgb = RGBColor(49, 130, 206)
+    add_heading2(doc, '2.1 技術スタック')
     
     table = doc.add_table(rows=5, cols=3)
     table.style = 'Table Grid'
@@ -193,8 +234,7 @@ def create_spec_document():
     
     doc.add_paragraph()
     
-    h2 = doc.add_heading('2.2 動作環境', level=2)
-    h2.runs[0].font.color.rgb = RGBColor(49, 130, 206)
+    add_heading2(doc, '2.2 動作環境')
     
     table = doc.add_table(rows=5, cols=2)
     table.style = 'Table Grid'
@@ -220,12 +260,10 @@ def create_spec_document():
     doc.add_page_break()
     
     # ===== 3. 画面仕様 =====
-    h = doc.add_heading('3. 画面仕様', level=1)
-    h.runs[0].font.color.rgb = RGBColor(26, 54, 93)
+    add_heading1(doc, '3. 画面仕様')
     
     # 画面一覧表
-    h2 = doc.add_heading('画面一覧', level=2)
-    h2.runs[0].font.color.rgb = RGBColor(49, 130, 206)
+    add_heading2(doc, '画面一覧')
     
     table = doc.add_table(rows=7, cols=4)
     table.style = 'Table Grid'
@@ -253,8 +291,7 @@ def create_spec_document():
     doc.add_page_break()
     
     # ----- 3.1 行動予定表 -----
-    h2 = doc.add_heading('3.1 行動予定表', level=2)
-    h2.runs[0].font.color.rgb = RGBColor(49, 130, 206)
+    add_heading2(doc, '3.1 行動予定表')
     
     p = doc.add_paragraph()
     run = p.add_run('【縦置き 75インチ (1080×1920)】')
@@ -272,7 +309,7 @@ def create_spec_document():
     
     doc.add_paragraph()
     
-    h3 = doc.add_heading('表示項目', level=3)
+    add_heading3(doc, '表示項目')
     table = doc.add_table(rows=5, cols=4)
     table.style = 'Table Grid'
     
@@ -296,7 +333,7 @@ def create_spec_document():
     
     doc.add_paragraph()
     
-    h3 = doc.add_heading('動的スケーリング仕様', level=3)
+    add_heading3(doc, '動的スケーリング仕様')
     doc.add_paragraph('表示人数に応じてフォントサイズを自動調整します。')
     
     table = doc.add_table(rows=5, cols=2)
@@ -321,8 +358,7 @@ def create_spec_document():
     doc.add_page_break()
     
     # ----- 3.2 施工サイクル表 -----
-    h2 = doc.add_heading('3.2 施工サイクル表', level=2)
-    h2.runs[0].font.color.rgb = RGBColor(49, 130, 206)
+    add_heading2(doc, '3.2 施工サイクル表')
     
     p = doc.add_paragraph()
     run = p.add_run('【縦置き】')
@@ -339,15 +375,15 @@ def create_spec_document():
     
     doc.add_paragraph()
     
-    h3 = doc.add_heading('ステータス表示', level=3)
+    add_heading3(doc, 'ステータス表示')
     table = doc.add_table(rows=5, cols=3)
     table.style = 'Table Grid'
     data = [
         ('ステータス', '記号', '色'),
-        ('完了', '✓', '緑 (#38a169)'),
-        ('作業中', '◐', '黄 (#d69e2e)'),
-        ('未着手', '○', 'グレー (#a0aec0)'),
-        ('要確認', '!', '赤 (#e53e3e)'),
+        ('完了', 'チェック', '緑 (#38a169)'),
+        ('作業中', '右矢印', '青 (#3182ce)'),
+        ('未着手', '丸', 'グレー (#a0aec0)'),
+        ('要確認', 'ビックリマーク', '赤 (#e53e3e)'),
     ]
     for i, row_data in enumerate(data):
         row = table.rows[i]
@@ -362,8 +398,7 @@ def create_spec_document():
     doc.add_page_break()
     
     # ----- 3.3 協力業者作業一覧 -----
-    h2 = doc.add_heading('3.3 協力業者作業一覧', level=2)
-    h2.runs[0].font.color.rgb = RGBColor(49, 130, 206)
+    add_heading2(doc, '3.3 協力業者作業一覧')
     
     p = doc.add_paragraph()
     run = p.add_run('【横置き】')
@@ -380,7 +415,7 @@ def create_spec_document():
     
     doc.add_paragraph()
     
-    h3 = doc.add_heading('表示項目', level=3)
+    add_heading3(doc, '表示項目')
     table = doc.add_table(rows=4, cols=3)
     table.style = 'Table Grid'
     data = [
@@ -405,8 +440,7 @@ def create_spec_document():
     doc.add_page_break()
     
     # ----- 3.4 月間行事予定表 -----
-    h2 = doc.add_heading('3.4 月間行事予定表', level=2)
-    h2.runs[0].font.color.rgb = RGBColor(49, 130, 206)
+    add_heading2(doc, '3.4 月間行事予定表')
     
     p = doc.add_paragraph()
     run = p.add_run('【横置き 75インチ (1920×1080)】')
@@ -423,7 +457,7 @@ def create_spec_document():
     
     doc.add_paragraph()
     
-    h3 = doc.add_heading('イベントタグ', level=3)
+    add_heading3(doc, 'イベントタグ')
     table = doc.add_table(rows=5, cols=3)
     table.style = 'Table Grid'
     data = [
@@ -446,8 +480,7 @@ def create_spec_document():
     doc.add_page_break()
     
     # ----- 3.5 ポスター表示 -----
-    h2 = doc.add_heading('3.5 ポスター表示', level=2)
-    h2.runs[0].font.color.rgb = RGBColor(49, 130, 206)
+    add_heading2(doc, '3.5 ポスター表示')
     
     p = doc.add_paragraph()
     run = p.add_run('【縦置きと横置き両対応】')
@@ -457,13 +490,13 @@ def create_spec_document():
     doc.add_paragraph('社内ポスターや掲示物をスライドショー形式で表示します。')
     
     doc.add_paragraph()
-    h3 = doc.add_heading('対応フォーマット', level=3)
+    add_heading3(doc, '対応フォーマット')
     formats = ['JPEG (.jpg, .jpeg)', 'PNG (.png)', 'PDF (.pdf) ※1ファイル=1ページ前提']
     for f in formats:
-        doc.add_paragraph(f, style='List Bullet')
+        add_bullet(doc, f)
     
     doc.add_paragraph()
-    h3 = doc.add_heading('表示パターン（選択式）', level=3)
+    add_heading3(doc, '表示パターン（選択式）')
     
     # パターンA
     p = doc.add_paragraph()
@@ -482,13 +515,15 @@ def create_spec_document():
     
     doc.add_paragraph()
     p = doc.add_paragraph()
-    run = p.add_run('✅ メリット: ')
+    run = p.add_run('メリット: ')
     run.font.color.rgb = RGBColor(56, 161, 105)
+    run.font.bold = True
     p.add_run('ポスターが大きく見やすい / 実装がシンプル')
     
     p = doc.add_paragraph()
-    run = p.add_run('❌ デメリット: ')
+    run = p.add_run('デメリット: ')
     run.font.color.rgb = RGBColor(229, 62, 62)
+    run.font.bold = True
     p.add_run('表とポスターを同時に見られない')
     
     doc.add_paragraph()
@@ -509,25 +544,26 @@ def create_spec_document():
     
     doc.add_paragraph()
     p = doc.add_paragraph()
-    run = p.add_run('✅ メリット: ')
+    run = p.add_run('メリット: ')
     run.font.color.rgb = RGBColor(56, 161, 105)
+    run.font.bold = True
     p.add_run('表とポスターを同時に確認できる')
     
     p = doc.add_paragraph()
-    run = p.add_run('❌ デメリット: ')
+    run = p.add_run('デメリット: ')
     run.font.color.rgb = RGBColor(229, 62, 62)
+    run.font.bold = True
     p.add_run('表示領域が狭くなる / レイアウト調整が複雑')
     
     doc.add_page_break()
     
     # ----- 3.6 管理画面 -----
-    h2 = doc.add_heading('3.6 管理画面', level=2)
-    h2.runs[0].font.color.rgb = RGBColor(49, 130, 206)
+    add_heading2(doc, '3.6 管理画面')
     
     doc.add_paragraph('データ登録と設定変更を行う管理画面を提供します。サイネージ端末からのみアクセス可能です。')
     
     doc.add_paragraph()
-    h3 = doc.add_heading('機能一覧', level=3)
+    add_heading3(doc, '機能一覧')
     
     table = doc.add_table(rows=8, cols=2)
     table.style = 'Table Grid'
@@ -554,8 +590,7 @@ def create_spec_document():
     doc.add_page_break()
     
     # ===== 4. 表示サイクル仕様 =====
-    h = doc.add_heading('4. 表示サイクル仕様', level=1)
-    h.runs[0].font.color.rgb = RGBColor(26, 54, 93)
+    add_heading1(doc, '4. 表示サイクル仕様')
     
     doc.add_paragraph('各モニターで表示する画面を順番に切り替えます。切り替え間隔は設定画面から変更可能です。')
     
@@ -588,11 +623,9 @@ def create_spec_document():
     doc.add_page_break()
     
     # ===== 5. 非機能要件 =====
-    h = doc.add_heading('5. 非機能要件', level=1)
-    h.runs[0].font.color.rgb = RGBColor(26, 54, 93)
+    add_heading1(doc, '5. 非機能要件')
     
-    h2 = doc.add_heading('5.1 パフォーマンス', level=2)
-    h2.runs[0].font.color.rgb = RGBColor(49, 130, 206)
+    add_heading2(doc, '5.1 パフォーマンス')
     
     table = doc.add_table(rows=4, cols=2)
     table.style = 'Table Grid'
@@ -614,8 +647,7 @@ def create_spec_document():
     
     doc.add_paragraph()
     
-    h2 = doc.add_heading('5.2 信頼性', level=2)
-    h2.runs[0].font.color.rgb = RGBColor(49, 130, 206)
+    add_heading2(doc, '5.2 信頼性')
     
     items = [
         '24時間365日連続稼働を想定',
@@ -623,12 +655,11 @@ def create_spec_document():
         'データベースの定期バックアップ機能',
     ]
     for item in items:
-        doc.add_paragraph(item, style='List Bullet')
+        add_bullet(doc, item)
     
     doc.add_paragraph()
     
-    h2 = doc.add_heading('5.3 セキュリティ', level=2)
-    h2.runs[0].font.color.rgb = RGBColor(49, 130, 206)
+    add_heading2(doc, '5.3 セキュリティ')
     
     items = [
         'インターネット非接続による物理的セキュリティ確保',
@@ -636,13 +667,12 @@ def create_spec_document():
         'ファイルシステムへのアクセスは最小限に制限',
     ]
     for item in items:
-        doc.add_paragraph(item, style='List Bullet')
+        add_bullet(doc, item)
     
     doc.add_page_break()
     
     # ===== 6. 開発スケジュール =====
-    h = doc.add_heading('6. 開発スケジュール', level=1)
-    h.runs[0].font.color.rgb = RGBColor(26, 54, 93)
+    add_heading1(doc, '6. 開発スケジュール')
     
     doc.add_paragraph('想定開発期間: 約8週間')
     doc.add_paragraph()
@@ -670,8 +700,7 @@ def create_spec_document():
     doc.add_paragraph()
     
     # ===== 7. 納品物 =====
-    h = doc.add_heading('7. 納品物', level=1)
-    h.runs[0].font.color.rgb = RGBColor(26, 54, 93)
+    add_heading1(doc, '7. 納品物')
     
     items = [
         '実行可能ファイル（Windows用 .exe）',
@@ -680,7 +709,7 @@ def create_spec_document():
         '設定変更ガイド（画面追加手順含む）',
     ]
     for item in items:
-        doc.add_paragraph(item, style='List Bullet')
+        add_bullet(doc, item)
     
     doc.add_paragraph()
     doc.add_paragraph()
@@ -696,7 +725,7 @@ def create_spec_document():
     # 保存
     output_path = 'docs/デジタルサイネージシステム_要件定義書.docx'
     doc.save(output_path)
-    print(f'✅ 保存完了: {output_path}')
+    print(f'保存完了: {output_path}')
 
 if __name__ == '__main__':
     os.chdir('/Users/ogikubo/Desktop/digital-signage')
