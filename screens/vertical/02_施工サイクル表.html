@@ -19,7 +19,6 @@
       transform: scale(0.5);
       transform-origin: top left;
     }
-    /* ヘッダー - 余白なし */
     .header {
       background: linear-gradient(135deg, #1a365d 0%, #2d3748 100%);
       color: white;
@@ -29,7 +28,7 @@
       align-items: center;
     }
     .header h1 {
-      font-size: 42px;
+      font-size: 38px;
       font-weight: 700;
     }
     .datetime {
@@ -43,18 +42,16 @@
       font-size: 22px;
       opacity: 0.9;
     }
-    /* 表 - ヘッダーに完全にくっつける */
     .content {
       background: #f7fafc;
     }
-    /* タイトル行 */
     .table-title {
       background: #2d3748;
       color: white;
       text-align: center;
-      font-size: 36px;
+      font-size: 32px;
       font-weight: 700;
-      padding: 20px;
+      padding: 18px;
       border-bottom: 3px solid #4a5568;
     }
     .cycle-table {
@@ -64,66 +61,96 @@
     .cycle-table th {
       background: #4a5568;
       color: white;
-      padding: 18px 15px;
-      font-size: 26px;
+      padding: 14px 10px;
+      font-size: 22px;
       font-weight: 600;
       text-align: center;
       border: 2px solid #718096;
     }
-    .cycle-table th.status-col { width: 15%; }
+    .cycle-table th.status-col { width: 12%; }
     .cycle-table th.no-col { width: 10%; }
-    .cycle-table th.content-col { width: 75%; }
+    .cycle-table th.content-col { width: 78%; }
     .cycle-table td {
-      padding: 22px 15px;
-      font-size: 26px;
+      padding: 12px 10px;
+      font-size: 22px;
       border: 2px solid #e2e8f0;
       vertical-align: middle;
     }
     .cycle-table tr:nth-child(even) { background: #edf2f7; }
     .cycle-table tr:nth-child(odd) { background: #ffffff; }
     
-    /* ステータスセル */
     .status-cell {
       text-align: center;
     }
-    .status-icon {
-      font-size: 48px;
-      display: block;
-    }
+    
     /* 完了: チェックマーク */
-    .status-complete { color: #38a169; }
-    /* 作業中: 大きめの青い左矢印 */
-    .status-progress { 
-      color: #3182ce; 
-      font-size: 56px;
-      font-weight: 900;
+    .status-complete {
+      color: #38a169;
+      font-size: 36px;
+      font-weight: bold;
     }
+    
+    /* 作業中: 右向き矢印（足付き） */
+    .status-progress {
+      display: inline-block;
+      position: relative;
+      width: 50px;
+      height: 24px;
+    }
+    .status-progress::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 30px;
+      height: 8px;
+      background: #3182ce;
+    }
+    .status-progress::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border-top: 14px solid transparent;
+      border-bottom: 14px solid transparent;
+      border-left: 20px solid #3182ce;
+    }
+    
     /* 未着手: グレー丸 */
-    .status-pending { color: #a0aec0; }
+    .status-pending {
+      color: #a0aec0;
+      font-size: 32px;
+    }
+    
     /* 要確認: 赤ビックリ */
-    .status-warning { color: #e53e3e; }
+    .status-warning {
+      color: #e53e3e;
+      font-size: 36px;
+      font-weight: bold;
+    }
+    
     /* ユーザー指定: 紫星 */
-    .status-custom { color: #9f7aea; }
+    .status-custom {
+      color: #9f7aea;
+      font-size: 32px;
+    }
     
     .no-cell {
       text-align: center;
       font-weight: 700;
-      font-size: 28px;
+      font-size: 22px;
       color: #2d3748;
     }
     .content-cell {
       text-align: left;
-      padding-left: 25px;
-    }
-    .task-title {
-      font-weight: 700;
-      font-size: 28px;
-      color: #1a365d;
-      margin-bottom: 8px;
-    }
-    .task-content {
+      padding-left: 20px;
       font-size: 22px;
-      color: #4a5568;
+      color: #1a365d;
+      font-weight: 500;
     }
   </style>
 </head>
@@ -138,8 +165,7 @@
     </header>
     
     <div class="content">
-      <!-- タイトル行（中央揃え・1列） -->
-      <div class="table-title">本日の施工サイクル</div>
+      <div class="table-title">床版工（柱頭部）施工サイクル</div>
       
       <table class="cycle-table">
         <thead>
@@ -151,76 +177,104 @@
         </thead>
         <tbody>
           <tr>
-            <td class="status-cell"><span class="status-icon status-complete">✓</span></td>
+            <td class="status-cell"><span class="status-complete">&#10003;</span></td>
             <td class="no-cell">1</td>
-            <td class="content-cell">
-              <div class="task-title">朝礼・KY活動</div>
-              <div class="task-content">全員参加による朝礼、危険予知活動の実施</div>
-            </td>
+            <td class="content-cell">一次足場組立</td>
           </tr>
           <tr>
-            <td class="status-cell"><span class="status-icon status-complete">✓</span></td>
-            <td class="no-cell">2</td>
-            <td class="content-cell">
-              <div class="task-title">足場組立</div>
-              <div class="task-content">A棟東側 3F〜5F 外部足場の組立作業</div>
-            </td>
+            <td class="status-cell"><span class="status-complete">&#10003;</span></td>
+            <td class="no-cell">2-a</td>
+            <td class="content-cell">ストラット下部受台施工</td>
           </tr>
           <tr>
-            <td class="status-cell"><span class="status-icon status-progress">◀</span></td>
+            <td class="status-cell"><span class="status-complete">&#10003;</span></td>
+            <td class="no-cell">2-b</td>
+            <td class="content-cell">WJはつり</td>
+          </tr>
+          <tr>
+            <td class="status-cell"><span class="status-complete">&#10003;</span></td>
             <td class="no-cell">3</td>
-            <td class="content-cell">
-              <div class="task-title">鉄筋組立</div>
-              <div class="task-content">B棟基礎部分 配筋作業（D13, D16）</div>
-            </td>
+            <td class="content-cell">手はつり</td>
           </tr>
           <tr>
-            <td class="status-cell"><span class="status-icon status-pending">○</span></td>
+            <td class="status-cell"><span class="status-progress"></span></td>
             <td class="no-cell">4</td>
-            <td class="content-cell">
-              <div class="task-title">型枠建込</div>
-              <div class="task-content">A棟 2F スラブ型枠の建込作業</div>
-            </td>
+            <td class="content-cell">NAPP削孔</td>
           </tr>
           <tr>
-            <td class="status-cell"><span class="status-icon status-pending">○</span></td>
+            <td class="status-cell"><span class="status-pending">○</span></td>
             <td class="no-cell">5</td>
-            <td class="content-cell">
-              <div class="task-title">コンクリート打設</div>
-              <div class="task-content">A棟 1F 壁・柱部分 コンクリート打設</div>
-            </td>
+            <td class="content-cell">壁高欄コア削孔</td>
           </tr>
           <tr>
-            <td class="status-cell"><span class="status-icon status-warning">!</span></td>
+            <td class="status-cell"><span class="status-pending">○</span></td>
             <td class="no-cell">6</td>
-            <td class="content-cell">
-              <div class="task-title">設備配管</div>
-              <div class="task-content">B棟 給排水配管ルート確認・墨出し</div>
-            </td>
+            <td class="content-cell">上部鋼材ブラケット設置〜緊張</td>
           </tr>
           <tr>
-            <td class="status-cell"><span class="status-icon status-custom">★</span></td>
+            <td class="status-cell"><span class="status-pending">○</span></td>
             <td class="no-cell">7</td>
-            <td class="content-cell">
-              <div class="task-title">安全パトロール</div>
-              <div class="task-content">13:00〜 安全管理者による巡回点検</div>
-            </td>
+            <td class="content-cell">二次足場組替</td>
           </tr>
           <tr>
-            <td class="status-cell"><span class="status-icon status-pending">○</span></td>
+            <td class="status-cell"><span class="status-pending">○</span></td>
             <td class="no-cell">8</td>
-            <td class="content-cell">
-              <div class="task-title">片付け・清掃</div>
-              <div class="task-content">作業エリア周辺の整理整頓・清掃</div>
-            </td>
+            <td class="content-cell">ストラット受架台組立</td>
           </tr>
           <tr>
-            <td class="status-cell"><span class="status-icon status-pending">○</span></td>
+            <td class="status-cell"><span class="status-pending">○</span></td>
             <td class="no-cell">9</td>
-            <td class="content-cell">
-              <div class="task-title">終礼・翌日準備</div>
-              <div class="task-content">本日の振り返り、翌日作業の確認</div>
-            </td>
+            <td class="content-cell">受皿・鋼製ストラット仮設置</td>
+          </tr>
+          <tr>
+            <td class="status-cell"><span class="status-pending">○</span></td>
+            <td class="no-cell">10</td>
+            <td class="content-cell">腕木支保工・底版組立</td>
+          </tr>
+          <tr>
+            <td class="status-cell"><span class="status-pending">○</span></td>
+            <td class="no-cell">11</td>
+            <td class="content-cell">受皿・鋼製ストラット定着</td>
+          </tr>
+          <tr>
+            <td class="status-cell"><span class="status-pending">○</span></td>
+            <td class="no-cell">12</td>
+            <td class="content-cell">側枠・小口枠組立</td>
+          </tr>
+          <tr>
+            <td class="status-cell"><span class="status-pending">○</span></td>
+            <td class="no-cell">13</td>
+            <td class="content-cell">鉄筋組立（下筋）</td>
+          </tr>
+          <tr>
+            <td class="status-cell"><span class="status-pending">○</span></td>
+            <td class="no-cell">14</td>
+            <td class="content-cell">PC組立</td>
+          </tr>
+          <tr>
+            <td class="status-cell"><span class="status-pending">○</span></td>
+            <td class="no-cell">15</td>
+            <td class="content-cell">鉄筋組立（上筋）</td>
+          </tr>
+          <tr>
+            <td class="status-cell"><span class="status-pending">○</span></td>
+            <td class="no-cell">16</td>
+            <td class="content-cell">コンクリート打設</td>
+          </tr>
+          <tr>
+            <td class="status-cell"><span class="status-pending">○</span></td>
+            <td class="no-cell">17</td>
+            <td class="content-cell">PC緊張</td>
+          </tr>
+          <tr>
+            <td class="status-cell"><span class="status-pending">○</span></td>
+            <td class="no-cell">18</td>
+            <td class="content-cell">腕木支保工・底版解体</td>
+          </tr>
+          <tr>
+            <td class="status-cell"><span class="status-pending">○</span></td>
+            <td class="no-cell">19</td>
+            <td class="content-cell">二次足場解体</td>
           </tr>
         </tbody>
       </table>
