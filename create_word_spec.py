@@ -133,6 +133,22 @@ def create_spec_document():
     
     doc.add_page_break()
     
+    # ===== 開発状況 =====
+    status_box = doc.add_paragraph()
+    status_box.paragraph_format.space_before = Pt(20)
+    status_box.paragraph_format.space_after = Pt(20)
+    run = status_box.add_run('【開発状況のご報告】')
+    run.font.size = Pt(16)
+    run.font.bold = True
+    run.font.color.rgb = RGBColor(56, 161, 105)
+    
+    doc.add_paragraph(
+        'すでにフロントエンド側はコーディングを進めており、開発も少し進んでいる段階です。'
+        '納品スケジュールには問題なく間に合う見込みですので、ご安心ください。'
+    )
+    
+    doc.add_paragraph()
+    
     # ===== 目次 =====
     add_heading1(doc, '目次')
     
