@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>デジタルサイネージシステム 要件定義書</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', sans-serif;
+      background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+      min-height: 100vh;
+      color: #e2e8f0;
+      line-height: 1.8;
+    }
+    .container { max-width: 1400px; margin: 0 auto; padding: 40px 20px; }
+    
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 50px;
+      padding: 40px;
+      background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+      border-radius: 20px;
+      border: 1px solid #4a5568;
+    }
+    .header h1 {
+      font-size: 42px;
+      color: #68d391;
+      margin-bottom: 15px;
+    }
+    .header .meta {
+      color: #a0aec0;
+      font-size: 16px;
+    }
+    .header .meta span { margin: 0 15px; }
+    
+    /* Section */
+    .section {
+      background: #2d3748;
+      border-radius: 15px;
+      padding: 30px;
+      margin-bottom: 30px;
+      border: 1px solid #4a5568;
+    }
+    .section-title {
+      font-size: 28px;
+      color: #fbd38d;
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #4a5568;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .section-icon { font-size: 32px; }
+    
+    /* Cards Grid */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: #4a5568;
+      border-radius: 12px;
+      padding: 25px;
+      transition: transform 0.2s;
+    }
+    .card:hover { transform: translateY(-3px); }
+    .card-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #68d391;
+      margin-bottom: 15px;
+    }
+    .card-content { font-size: 15px; color: #cbd5e0; }
+    
+    /* Screens Section */
+    .screen-card {
+      background: #4a5568;
+      border-radius: 15px;
+      padding: 25px;
+      margin-bottom: 25px;
+    }
+    .screen-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    .screen-badge {
+      padding: 8px 20px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .badge-vertical { background: #9f7aea; color: white; }
+    .badge-horizontal { background: #4299e1; color: white; }
+    .badge-admin { background: #ed8936; color: white; }
+    .screen-name {
+      font-size: 24px;
+      font-weight: 700;
+      color: white;
+    }
+    .screen-desc {
+      color: #a0aec0;
+      font-size: 15px;
+      margin-bottom: 20px;
+    }
+    .screen-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+    }
+    .screen-image {
+      background: #2d3748;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 2px solid #4a5568;
+    }
+    .screen-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .screen-details { padding: 10px 0; }
+    
+    /* Table */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    .data-table th {
+      background: #2d3748;
+      padding: 12px 15px;
+      text-align: left;
+      font-size: 14px;
+      color: #a0aec0;
+      border-bottom: 2px solid #4a5568;
+    }
+    .data-table td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #4a5568;
+      font-size: 14px;
+    }
+    .data-table tr:hover { background: rgba(255,255,255,0.03); }
+    
+    /* Tags */
+    .tag {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 15px;
+      font-size: 12px;
+      margin: 3px 3px 3px 0;
+    }
+    .tag-green { background: #38a169; color: white; }
+    .tag-blue { background: #3182ce; color: white; }
+    .tag-orange { background: #dd6b20; color: white; }
+    .tag-red { background: #e53e3e; color: white; }
+    .tag-gray { background: #718096; color: white; }
+    
+    /* Status */
+    .status-list { margin-top: 15px; }
+    .status-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 10px 15px;
+      background: #2d3748;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+    .status-icon { font-size: 24px; }
+    .status-label { font-weight: 600; }
+    .status-value { color: #a0aec0; margin-left: auto; }
+    
+    /* Timeline */
+    .timeline { margin-top: 20px; }
+    .timeline-item {
+      display: flex;
+      gap: 20px;
+      padding: 20px 0;
+      border-left: 3px solid #4299e1;
+      padding-left: 25px;
+      margin-left: 15px;
+      position: relative;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -10px;
+      top: 25px;
+      width: 18px;
+      height: 18px;
+      background: #4299e1;
+      border-radius: 50%;
+      border: 3px solid #2d3748;
+    }
+    .timeline-phase {
+      background: #4299e1;
+      color: white;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .timeline-content { flex: 1; }
+    .timeline-duration {
+      color: #68d391;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    
+    /* Poster Patterns */
+    .patterns-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 25px;
+      margin-top: 20px;
+    }
+    .pattern-card {
+      background: #2d3748;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .pattern-header {
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .pattern-name {
+      font-size: 18px;
+      font-weight: 700;
+    }
+    .pattern-image {
+      border-top: 1px solid #4a5568;
+    }
+    .pattern-image img {
+      width: 100%;
+      height: auto;
+    }
+    .pattern-pros-cons {
+      padding: 20px;
+      border-top: 1px solid #4a5568;
+    }
+    .pros { color: #68d391; }
+    .cons { color: #fc8181; }
+    
+    /* Responsive */
+    @media (max-width: 900px) {
+      .screen-content { grid-template-columns: 1fr; }
+      .patterns-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1>🖥️ デジタルサイネージシステム</h1>
+      <h2 style="color: #a0aec0; font-size: 24px; font-weight: 400;">要件定義書</h2>
+      <div class="meta">
+        <span>📅 作成: 2026/02/15</span>
+        <span>🔄 更新: 2026/02/16</span>
+        <span>👤 千歳開発</span>
+      </div>
+    </div>
+
+    <!-- 1. プロジェクト概要 -->
+    <div class="section">
+      <h2 class="section-title"><span class="section-icon">📋</span>プロジェクト概要</h2>
+      <p style="font-size: 18px; margin-bottom: 25px;">
+        現場事務所内に設置されたモニターで、行動予定・協力業者・月間予定・施工サイクル等の情報をデジタル表示するサイネージシステムを構築する。
+      </p>
+      <div class="cards-grid">
+        <div class="card">
+          <div class="card-title">🔒 システム特性</div>
+          <div class="card-content">
+            <p>• 完全オンプレミス環境</p>
+            <p>• 単一Windows PCで動作</p>
+            <p>• 外部通信なし</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">⚠️ 制約事項</div>
+          <div class="card-content">
+            <p>• 外部API連携不可</p>
+            <p>• 縦横混在サイクル不可</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. 技術スタック -->
+    <div class="section">
+      <h2 class="section-title"><span class="section-icon">⚙️</span>技術スタック</h2>
+      <div class="cards-grid">
+        <div class="card">
+          <div class="card-title">📦 Electron</div>
+          <div class="card-content">デスクトップアプリとして動作</div>
+        </div>
+        <div class="card">
+          <div class="card-title">⚛️ React / Vue.js</div>
+          <div class="card-content">コンポーネント指向フロントエンド</div>
+        </div>
+        <div class="card">
+          <div class="card-title">🗃️ SQLite</div>
+          <div class="card-content">ファイルベース軽量DB</div>
+        </div>
+        <div class="card">
+          <div class="card-title">📄 YAML / JSON</div>
+          <div class="card-content">画面定義の外部化</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. 画面仕様 -->
+    <div class="section">
+      <h2 class="section-title"><span class="section-icon">🖼️</span>画面仕様</h2>
+      
+      <!-- 行動予定表 -->
+      <div class="screen-card">
+        <div class="screen-header">
+          <span class="screen-badge badge-vertical">縦置き</span>
+          <span class="screen-name">📊 行動予定表</span>
+        </div>
+        <p class="screen-desc">社員の行動状況（氏名・行先・使用車両・帰社予定）を表形式で表示</p>
+        <div class="screen-content">
+          <div class="screen-image">
+            <img src="screenshots/01_行動予定表.png" alt="行動予定表">
+          </div>
+          <div class="screen-details">
+            <h4 style="color: #68d391; margin-bottom: 10px;">📋 表示項目</h4>
+            <table class="data-table">
+              <tr><th>項目</th><th>型</th><th>必須</th></tr>
+              <tr><td>氏名</td><td>文字列</td><td>✅</td></tr>
+              <tr><td>行先</td><td>文字列</td><td>✅</td></tr>
+              <tr><td>使用車両</td><td>文字列</td><td>-</td></tr>
+              <tr><td>帰社予定</td><td>時刻</td><td>-</td></tr>
+            </table>
+            <h4 style="color: #68d391; margin: 20px 0 10px;">📐 動的スケーリング</h4>
+            <p style="color: #a0aec0; font-size: 14px;">行数に応じてフォントサイズを自動調整</p>
+            <div style="margin-top: 10px;">
+              <span class="tag tag-green">10行以下: 26px</span>
+              <span class="tag tag-blue">11-15行: 22px</span>
+              <span class="tag tag-orange">16-20行: 18px</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 施工サイクル表 -->
+      <div class="screen-card">
+        <div class="screen-header">
+          <span class="screen-badge badge-vertical">縦置き</span>
+          <span class="screen-name">🔄 施工サイクル表</span>
+        </div>
+        <p class="screen-desc">当日の作業内容とステータスを表形式で表示</p>
+        <div class="screen-content">
+          <div class="screen-image">
+            <img src="screenshots/02_施工サイクル表.png" alt="施工サイクル表">
+          </div>
+          <div class="screen-details">
+            <h4 style="color: #68d391; margin-bottom: 15px;">🚦 ステータス表示</h4>
+            <div class="status-list">
+              <div class="status-item">
+                <span class="status-icon" style="color: #38a169;">✓</span>
+                <span class="status-label">完了</span>
+                <span class="status-value">#38a169</span>
+              </div>
+              <div class="status-item">
+                <span class="status-icon" style="color: #d69e2e;">◐</span>
+                <span class="status-label">作業中</span>
+                <span class="status-value">#d69e2e</span>
+              </div>
+              <div class="status-item">
+                <span class="status-icon" style="color: #a0aec0;">○</span>
+                <span class="status-label">未着手</span>
+                <span class="status-value">#a0aec0</span>
+              </div>
+              <div class="status-item">
+                <span class="status-icon" style="color: #e53e3e;">!</span>
+                <span class="status-label">要確認</span>
+                <span class="status-value">#e53e3e</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 協力業者一覧 -->
+      <div class="screen-card">
+        <div class="screen-header">
+          <span class="screen-badge badge-horizontal">横置き</span>
+          <span class="screen-name">🏢 協力業者作業一覧</span>
+        </div>
+        <p class="screen-desc">当日入場の協力業者名・作業内容・人数をカード形式で表示（4列グリッド）</p>
+        <div class="screen-content">
+          <div class="screen-image">
+            <img src="screenshots/03_協力業者一覧.png" alt="協力業者一覧">
+          </div>
+          <div class="screen-details">
+            <h4 style="color: #68d391; margin-bottom: 10px;">📋 表示項目</h4>
+            <table class="data-table">
+              <tr><th>項目</th><th>型</th><th>必須</th></tr>
+              <tr><td>業者名</td><td>文字列</td><td>✅</td></tr>
+              <tr><td>作業内容</td><td>文字列</td><td>-</td></tr>
+              <tr><td>人数</td><td>数値</td><td>-</td></tr>
+            </table>
+            <h4 style="color: #68d391; margin: 20px 0 10px;">📊 サマリー表示</h4>
+            <p style="color: #a0aec0; font-size: 14px;">入場業者数・入場人数を画面上部に表示</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 月間行事予定表 -->
+      <div class="screen-card">
+        <div class="screen-header">
+          <span class="screen-badge badge-horizontal">横置き</span>
+          <span class="screen-name">📅 月間行事予定表</span>
+        </div>
+        <p class="screen-desc">日付・曜日・予定をカレンダー形式で表示</p>
+        <div class="screen-content">
+          <div class="screen-image">
+            <img src="screenshots/04_月間行事予定表.png" alt="月間行事予定表">
+          </div>
+          <div class="screen-details">
+            <h4 style="color: #68d391; margin-bottom: 15px;">🏷️ イベントタグ</h4>
+            <div>
+              <span class="tag" style="background: #fed7d7; color: #c53030;">重要</span>
+              <span class="tag" style="background: #c6f6d5; color: #22543d;">定例</span>
+              <span class="tag" style="background: #bee3f8; color: #2b6cb0;">作業</span>
+              <span class="tag" style="background: #feebc8; color: #c05621;">休日</span>
+            </div>
+            <h4 style="color: #68d391; margin: 20px 0 10px;">📋 表示項目</h4>
+            <table class="data-table">
+              <tr><th>項目</th><th>型</th><th>自動生成</th></tr>
+              <tr><td>日付</td><td>日付</td><td>✅</td></tr>
+              <tr><td>曜日</td><td>文字列</td><td>✅</td></tr>
+              <tr><td>記事</td><td>文字列</td><td>-</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ポスター表示パターン -->
+      <div class="screen-card">
+        <div class="screen-header">
+          <span class="screen-badge" style="background: #48bb78;">縦横両対応</span>
+          <span class="screen-name">🖼️ ポスター表示パターン</span>
+        </div>
+        <p class="screen-desc">社内ポスター・掲示物のスライドショー表示方式</p>
+        
+        <div class="patterns-grid">
+          <div class="pattern-card">
+            <div class="pattern-header">
+              <span class="pattern-name">パターンA：フルスクリーン切替</span>
+              <span class="tag tag-green">推奨</span>
+            </div>
+            <div class="pattern-image">
+              <img src="screenshots/05_パターンA.png" alt="パターンA">
+            </div>
+            <div class="pattern-pros-cons">
+              <p class="pros">✅ ポスターが大きく見やすい</p>
+              <p class="pros">✅ 実装がシンプル</p>
+              <p class="cons">❌ 同時表示不可</p>
+            </div>
+          </div>
+          <div class="pattern-card">
+            <div class="pattern-header">
+              <span class="pattern-name">パターンB：分割表示</span>
+              <span class="tag tag-gray">オプション</span>
+            </div>
+            <div class="pattern-image">
+              <img src="screenshots/06_パターンB.png" alt="パターンB">
+            </div>
+            <div class="pattern-pros-cons">
+              <p class="pros">✅ 同時表示可能</p>
+              <p class="cons">❌ 表示領域が狭くなる</p>
+              <p class="cons">❌ レイアウト調整が複雑</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 管理画面 -->
+      <div class="screen-card">
+        <div class="screen-header">
+          <span class="screen-badge badge-admin">管理</span>
+          <span class="screen-name">⚙️ 管理画面</span>
+        </div>
+        <p class="screen-desc">データ登録・設定変更用の管理インターフェース</p>
+        <div class="cards-grid" style="margin-top: 20px;">
+          <div class="card"><div class="card-title">👤 行動予定表管理</div><div class="card-content">社員の追加・編集・削除</div></div>
+          <div class="card"><div class="card-title">🔄 施工サイクル管理</div><div class="card-content">作業項目の管理</div></div>
+          <div class="card"><div class="card-title">🏢 協力業者管理</div><div class="card-content">業者の追加・編集</div></div>
+          <div class="card"><div class="card-title">📅 月間予定管理</div><div class="card-content">日付ごとの予定入力</div></div>
+          <div class="card"><div class="card-title">🖼️ ポスター管理</div><div class="card-content">ディレクトリ指定・プレビュー</div></div>
+          <div class="card"><div class="card-title">🎛️ 表示設定</div><div class="card-content">サイクル秒数・タッチモード</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. 表示サイクル -->
+    <div class="section">
+      <h2 class="section-title"><span class="section-icon">⏱️</span>表示サイクル</h2>
+      <div class="cards-grid">
+        <div class="card">
+          <div class="card-title">📱 縦置きサイクル</div>
+          <div class="card-content">
+            <p style="font-size: 24px; color: #68d391; font-weight: 700;">10秒</p>
+            <p style="margin-top: 10px;">行動予定表 → 施工サイクル → ポスター → ループ</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">🖥️ 横置きサイクル</div>
+          <div class="card-content">
+            <p style="font-size: 24px; color: #68d391; font-weight: 700;">10秒</p>
+            <p style="margin-top: 10px;">協力業者 → 月間予定 → ポスター → ループ</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">🖼️ ポスター切替</div>
+          <div class="card-content">
+            <p style="font-size: 24px; color: #68d391; font-weight: 700;">5秒</p>
+            <p style="margin-top: 10px;">ポスター間の切り替え間隔</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. 非機能要件 -->
+    <div class="section">
+      <h2 class="section-title"><span class="section-icon">📊</span>非機能要件</h2>
+      <div class="cards-grid">
+        <div class="card">
+          <div class="card-title">⚡ パフォーマンス</div>
+          <div class="card-content">
+            <p>• 画面切替: 500ms以内</p>
+            <p>• 起動時間: 10秒以内</p>
+            <p>• メモリ: 500MB以下</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">🔒 信頼性</div>
+          <div class="card-content">
+            <p>• 24時間365日連続稼働</p>
+            <p>• エラー時自動復帰</p>
+            <p>• 定期バックアップ</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">🛡️ セキュリティ</div>
+          <div class="card-content">
+            <p>• インターネット非接続</p>
+            <p>• ローカルアクセス不可</p>
+            <p>• ファイルアクセス最小限</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">🔧 保守性</div>
+          <div class="card-content">
+            <p>• 画面定義外部ファイル化</p>
+            <p>• ログ出力機能</p>
+            <p>• 設定インポート/エクスポート</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. 開発スケジュール -->
+    <div class="section">
+      <h2 class="section-title"><span class="section-icon">📆</span>開発スケジュール（約8週間）</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <span class="timeline-phase">Phase 1</span>
+          <div class="timeline-content">
+            <div class="timeline-duration">2週間</div>
+            <div>基盤構築（Electron + DB + 設定読み込み）</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-phase">Phase 2</span>
+          <div class="timeline-content">
+            <div class="timeline-duration">2週間</div>
+            <div>サイネージ画面5種類の実装</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-phase">Phase 3</span>
+          <div class="timeline-content">
+            <div class="timeline-duration">2週間</div>
+            <div>管理画面の実装</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-phase">Phase 4</span>
+          <div class="timeline-content">
+            <div class="timeline-duration">1週間</div>
+            <div>結合テスト・調整</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-phase">Phase 5</span>
+          <div class="timeline-content">
+            <div class="timeline-duration">1週間</div>
+            <div>納品・導入サポート</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. 納品物 -->
+    <div class="section">
+      <h2 class="section-title"><span class="section-icon">📦</span>納品物</h2>
+      <div class="cards-grid">
+        <div class="card"><div class="card-title">💿 実行ファイル</div><div class="card-content">Windows用 .exe</div></div>
+        <div class="card"><div class="card-title">📁 ソースコード</div><div class="card-content">一式</div></div>
+        <div class="card"><div class="card-title">📖 操作マニュアル</div><div class="card-content">ユーザー向け</div></div>
+        <div class="card"><div class="card-title">🔧 設定変更ガイド</div><div class="card-content">画面追加手順含む</div></div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div style="text-align: center; padding: 40px; color: #718096;">
+      <p>作成: 千歳開発 | 2026年2月</p>
+    </div>
+  </div>
+</body>
+</html>

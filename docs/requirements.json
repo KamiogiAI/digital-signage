@@ -1,0 +1,323 @@
+{
+  "document": {
+    "title": "デジタルサイネージシステム 要件定義書",
+    "version": "1.0",
+    "created": "2026-02-15",
+    "updated": "2026-02-16",
+    "author": "千歳開発"
+  },
+
+  "project": {
+    "name": "デジタルサイネージシステム",
+    "purpose": "現場事務所内に設置されたモニターで、行動予定・協力業者・月間予定・施工サイクル等の情報をデジタル表示するサイネージシステム",
+    "characteristics": [
+      "完全オンプレミス環境（インターネット接続なし）",
+      "単一Windows PC上で動作",
+      "外部通信を行わない閉じた構成"
+    ],
+    "constraints": [
+      "天気予報等の外部API連携は不可",
+      "縦置きモニターと横置きモニターの表を同一サイクルに混在させることは不可"
+    ]
+  },
+
+  "technology": {
+    "framework": {
+      "name": "Electron",
+      "purpose": "デスクトップアプリとして動作"
+    },
+    "frontend": {
+      "options": ["React", "Vue.js"],
+      "note": "コンポーネント指向"
+    },
+    "database": {
+      "name": "SQLite",
+      "note": "ファイルベース、軽量"
+    },
+    "config": {
+      "format": ["YAML", "JSON"],
+      "purpose": "画面定義の外部化"
+    }
+  },
+
+  "environment": {
+    "os": "Windows 10/11",
+    "memory": "4GB以上推奨",
+    "storage": "1GB以上の空き容量",
+    "displays": {
+      "vertical": {
+        "resolution": "1080×1920",
+        "size": "75インチ"
+      },
+      "horizontal": {
+        "resolution": "1920×1080",
+        "size": "75インチ"
+      }
+    }
+  },
+
+  "screens": [
+    {
+      "id": "action-schedule",
+      "name": "行動予定表",
+      "orientation": "vertical",
+      "type": "table",
+      "description": "社員の行動状況表示",
+      "screenshot": "screenshots/01_行動予定表.png",
+      "columns": [
+        { "key": "name", "label": "氏名", "type": "text", "width": "20%", "required": true },
+        { "key": "destination", "label": "行先", "type": "text", "width": "35%", "required": true },
+        { "key": "vehicle", "label": "使用車両", "type": "text", "width": "22%", "required": false },
+        { "key": "returnTime", "label": "帰社予定", "type": "time", "width": "23%", "required": false }
+      ],
+      "scaling": {
+        "enabled": true,
+        "baseRows": 10,
+        "rules": [
+          { "rows": "1-10", "fontSize": "26px", "note": "基本フォントサイズ" },
+          { "rows": "11-15", "fontSize": "22px", "note": "行高さ縮小" },
+          { "rows": "16-20", "fontSize": "18px" },
+          { "rows": "21+", "fontSize": "16px", "note": "スクロール表示検討" }
+        ]
+      }
+    },
+    {
+      "id": "construction-cycle",
+      "name": "施工サイクル表",
+      "orientation": "vertical",
+      "type": "table",
+      "description": "当日の作業工程・ステータス表示",
+      "screenshot": "screenshots/02_施工サイクル表.png",
+      "columns": [
+        { "key": "title", "label": "タイトル", "type": "text", "width": "75%", "required": true },
+        {
+          "key": "status",
+          "label": "ステータス",
+          "type": "status",
+          "width": "25%",
+          "required": true,
+          "options": [
+            { "value": "complete", "label": "完了", "icon": "✓", "color": "#38a169" },
+            { "value": "progress", "label": "作業中", "icon": "◐", "color": "#d69e2e" },
+            { "value": "pending", "label": "未着手", "icon": "○", "color": "#a0aec0" },
+            { "value": "warning", "label": "要確認", "icon": "!", "color": "#e53e3e" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "contractors",
+      "name": "協力業者作業一覧",
+      "orientation": "horizontal",
+      "type": "card",
+      "description": "当日入場の協力業者表示",
+      "screenshot": "screenshots/03_協力業者一覧.png",
+      "layout": {
+        "type": "grid",
+        "columns": 4,
+        "autoScale": true,
+        "note": "業者数に応じてカードサイズを自動調整"
+      },
+      "fields": [
+        { "key": "companyName", "label": "業者名", "type": "text", "required": true },
+        { "key": "workType", "label": "作業内容", "type": "text", "required": false },
+        { "key": "workerCount", "label": "人数", "type": "number", "required": false }
+      ],
+      "summary": {
+        "enabled": true,
+        "items": ["入場業者数", "入場人数"]
+      }
+    },
+    {
+      "id": "monthly-events",
+      "name": "月間行事予定表",
+      "orientation": "horizontal",
+      "type": "calendar",
+      "description": "月間カレンダー形式の予定表示",
+      "screenshot": "screenshots/04_月間行事予定表.png",
+      "columns": [
+        { "key": "date", "label": "日", "type": "date", "required": true, "autoGenerate": true },
+        { "key": "dayOfWeek", "label": "曜日", "type": "text", "required": true, "autoGenerate": true },
+        { "key": "content", "label": "記事", "type": "text", "required": false }
+      ],
+      "eventTags": [
+        { "key": "important", "label": "重要", "bgColor": "#fed7d7", "textColor": "#c53030" },
+        { "key": "regular", "label": "定例", "bgColor": "#c6f6d5", "textColor": "#22543d" },
+        { "key": "work", "label": "作業", "bgColor": "#bee3f8", "textColor": "#2b6cb0" },
+        { "key": "holiday", "label": "休日", "bgColor": "#feebc8", "textColor": "#c05621" }
+      ]
+    },
+    {
+      "id": "poster",
+      "name": "ポスター表示",
+      "orientation": "both",
+      "type": "poster",
+      "description": "社内ポスター・掲示物のスライドショー",
+      "screenshots": {
+        "patternA": "screenshots/05_パターンA.png",
+        "patternB": "screenshots/06_パターンB.png"
+      },
+      "supportedFormats": ["jpg", "jpeg", "png", "pdf"],
+      "settings": {
+        "loadMethod": "directory",
+        "displayMethod": "slideshow",
+        "intervalSeconds": 5,
+        "aspectRatio": "maintain",
+        "alignment": "center",
+        "maxCount": "unlimited"
+      },
+      "displayPatterns": {
+        "A": {
+          "name": "フルスクリーン切替方式",
+          "recommended": true,
+          "description": "表とポスターを交互に切り替えて表示",
+          "flow": "表 → 表 → ポスター → 表 → ポスター → ループ",
+          "pros": ["ポスターが大きく見やすい", "表の視認性も確保", "実装がシンプル"],
+          "cons": ["ポスターと表を同時に見られない"]
+        },
+        "B": {
+          "name": "分割表示方式",
+          "recommended": false,
+          "description": "画面を上下に分割し、表とポスターを同時表示",
+          "layout": { "main": "70%", "sub": "30%" },
+          "pros": ["表とポスターを同時に確認できる"],
+          "cons": ["表の表示領域が狭くなり文字が小さくなる", "ポスターも小さく表示される", "レイアウト調整が複雑"]
+        }
+      }
+    },
+    {
+      "id": "admin",
+      "name": "管理画面",
+      "type": "admin",
+      "description": "データ登録・設定変更用",
+      "functions": [
+        { "name": "行動予定表管理", "description": "社員の追加・編集・削除、行動状況の更新" },
+        { "name": "施工サイクル管理", "description": "作業項目の追加・編集・削除・並び替え、ステータス更新" },
+        { "name": "協力業者管理", "description": "業者の追加・編集・削除・並び替え" },
+        { "name": "月間予定管理", "description": "年月選択、日付ごとの予定入力・編集・削除" },
+        { "name": "ポスター管理", "description": "ディレクトリ指定、プレビュー、表示順設定" },
+        { "name": "表示設定", "description": "切り替えサイクル秒数、各画面の表示/非表示、タッチモード切替" },
+        { "name": "画面定義管理", "description": "新規画面の追加（将来拡張用）" }
+      ],
+      "access": {
+        "restriction": "サイネージ端末からのみアクセス可能",
+        "network": "外部ネットワークからのアクセス不可"
+      }
+    }
+  ],
+
+  "displayCycle": {
+    "vertical": {
+      "intervalSeconds": 10,
+      "screens": ["action-schedule", "construction-cycle", "poster"]
+    },
+    "horizontal": {
+      "intervalSeconds": 10,
+      "screens": ["contractors", "monthly-events", "poster"]
+    },
+    "poster": {
+      "intervalSeconds": 5,
+      "note": "ポスター間の切り替え間隔"
+    },
+    "constraints": [
+      "縦置き画面と横置き画面は別サイクルとして管理",
+      "同一サイクル内で縦横混在は不可"
+    ]
+  },
+
+  "database": {
+    "type": "SQLite",
+    "tables": [
+      {
+        "name": "employees",
+        "description": "社員マスタ（行動予定表用）",
+        "columns": ["id", "name", "department", "created_at", "updated_at", "sort_order", "is_visible"]
+      },
+      {
+        "name": "action_schedules",
+        "description": "行動予定データ",
+        "columns": ["id", "employee_id", "date", "destination", "vehicle", "return_time", "status", "created_at", "updated_at"]
+      },
+      {
+        "name": "construction_cycles",
+        "description": "施工サイクルデータ",
+        "columns": ["id", "date", "title", "content", "status", "created_at", "updated_at", "sort_order"]
+      },
+      {
+        "name": "contractors",
+        "description": "協力業者データ",
+        "columns": ["id", "date", "company_name", "work_type", "worker_count", "created_at", "updated_at", "sort_order"]
+      },
+      {
+        "name": "monthly_events",
+        "description": "月間予定データ",
+        "columns": ["id", "date", "event_type", "content", "created_at", "updated_at"]
+      },
+      {
+        "name": "display_settings",
+        "description": "表示設定",
+        "columns": ["id", "key", "value", "updated_at"]
+      }
+    ],
+    "commonColumns": ["id", "created_at", "updated_at", "sort_order", "is_visible"]
+  },
+
+  "design": {
+    "fonts": ["Noto Sans JP", "メイリオ"],
+    "colors": {
+      "background": "#f7fafc",
+      "headerBg": "#2d3748",
+      "primary": "#1a365d",
+      "accent": "#3182ce",
+      "rowEven": "#edf2f7",
+      "rowOdd": "#ffffff"
+    },
+    "touchMode": {
+      "buttonMinSize": "60px × 120px",
+      "cellPadding": "28px",
+      "fontSize": "30px",
+      "tapAreaExpanded": true
+    }
+  },
+
+  "nonFunctional": {
+    "performance": {
+      "screenTransition": "500ms以内",
+      "startup": "10秒以内",
+      "memoryUsage": "500MB以下"
+    },
+    "reliability": {
+      "uptime": "24時間365日連続稼働",
+      "errorRecovery": "エラー発生時は自動復帰（クラッシュ時は自動再起動）",
+      "backup": "データベースの定期バックアップ機能"
+    },
+    "security": {
+      "network": "インターネット非接続による物理的セキュリティ確保",
+      "localNetwork": "ローカルネットワークからのアクセスも原則不可",
+      "fileAccess": "ファイルシステムへのアクセスは最小限に制限"
+    },
+    "maintainability": {
+      "extensibility": "画面定義の外部ファイル化による拡張性確保",
+      "logging": "ログ出力機能（エラー・操作履歴）",
+      "importExport": "設定のエクスポート/インポート機能"
+    }
+  },
+
+  "schedule": {
+    "phases": [
+      { "phase": 1, "duration": "2週間", "content": "基盤構築（Electron + DB + 設定読み込み）" },
+      { "phase": 2, "duration": "2週間", "content": "サイネージ画面5種類の実装" },
+      { "phase": 3, "duration": "2週間", "content": "管理画面の実装" },
+      { "phase": 4, "duration": "1週間", "content": "結合テスト・調整" },
+      { "phase": 5, "duration": "1週間", "content": "納品・導入サポート" }
+    ],
+    "total": "約8週間"
+  },
+
+  "deliverables": [
+    "実行可能ファイル（Windows用 .exe）",
+    "ソースコード一式",
+    "操作マニュアル",
+    "設定変更ガイド（画面追加手順含む）"
+  ]
+}
