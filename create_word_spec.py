@@ -119,7 +119,7 @@ def create_spec_document():
     h2.runs[0].font.color.rgb = RGBColor(49, 130, 206)
     
     doc.add_paragraph(
-        '現場事務所内に設置されたモニターで、行動予定・協力業者・月間予定・施工サイクル等の'
+        '現場事務所内に設置されたモニターで、行動予定、協力業者、月間予定、施工サイクル等の'
         '情報をデジタル表示するサイネージシステムを構築します。'
     )
     
@@ -233,11 +233,11 @@ def create_spec_document():
     data = [
         ('No', '画面名', '向き', '用途'),
         ('1', '行動予定表', '縦置き', '社員の行動状況表示'),
-        ('2', '施工サイクル表', '縦置き', '当日の作業工程・ステータス表示'),
+        ('2', '施工サイクル表', '縦置き', '当日の作業工程とステータス表示'),
         ('3', '協力業者作業一覧', '横置き', '当日入場の協力業者表示'),
         ('4', '月間行事予定表', '横置き', '月間カレンダー形式の予定表示'),
-        ('5', 'ポスター表示', '両対応', '社内ポスター・掲示物のスライドショー'),
-        ('6', '管理画面', '-', 'データ登録・設定変更用'),
+        ('5', 'ポスター表示', '両対応', '社内ポスターや掲示物のスライドショー'),
+        ('6', '管理画面', '-', 'データ登録や設定変更用'),
     ]
     
     for i, row_data in enumerate(data):
@@ -261,7 +261,7 @@ def create_spec_document():
     run.font.bold = True
     run.font.color.rgb = RGBColor(159, 122, 234)
     
-    doc.add_paragraph('社員の行動状況（氏名・行先・使用車両・帰社予定時刻）を一覧表示します。')
+    doc.add_paragraph('社員の行動状況（氏名、行先、使用車両、帰社予定時刻）を一覧表示します。')
     
     # 画像挿入
     img_path = 'docs/screenshots/01_行動予定表.png'
@@ -279,7 +279,7 @@ def create_spec_document():
     data = [
         ('項目', '型', '必須', '説明'),
         ('氏名', '文字列', '○', '社員名'),
-        ('行先', '文字列', '○', '外出先・「在席」等'),
+        ('行先', '文字列', '○', '外出先や「在席」等'),
         ('使用車両', '文字列', '-', '社用車のナンバー等'),
         ('帰社予定', '時刻', '-', 'HH:MM形式'),
     ]
@@ -370,7 +370,7 @@ def create_spec_document():
     run.font.bold = True
     run.font.color.rgb = RGBColor(66, 153, 225)
     
-    doc.add_paragraph('当日入場の協力業者名・作業内容・人数をカード形式で表示します。4列グリッドで配置し、業者数に応じてカードサイズを自動調整します。')
+    doc.add_paragraph('当日入場の協力業者名、作業内容、人数をカード形式で表示します。4列グリッドで配置し、業者数に応じてカードサイズを自動調整します。')
     
     img_path = 'docs/screenshots/03_協力業者一覧.png'
     if os.path.exists(img_path):
@@ -413,7 +413,7 @@ def create_spec_document():
     run.font.bold = True
     run.font.color.rgb = RGBColor(66, 153, 225)
     
-    doc.add_paragraph('日付・曜日・行事予定をカレンダー形式で表示します。当日の行はハイライト表示されます。')
+    doc.add_paragraph('日付、曜日、行事予定をカレンダー形式で表示します。当日の行はハイライト表示されます。')
     
     img_path = 'docs/screenshots/04_月間行事予定表.png'
     if os.path.exists(img_path):
@@ -431,7 +431,7 @@ def create_spec_document():
         ('重要', '重要イベント', '#fed7d7（薄い赤）'),
         ('定例', '定例会議等', '#c6f6d5（薄い緑）'),
         ('作業', '作業予定', '#bee3f8（薄い青）'),
-        ('休日', '休日・祝日', '#feebc8（薄いオレンジ）'),
+        ('休日', '休日や祝日', '#feebc8（薄いオレンジ）'),
     ]
     for i, row_data in enumerate(data):
         row = table.rows[i]
@@ -450,11 +450,11 @@ def create_spec_document():
     h2.runs[0].font.color.rgb = RGBColor(49, 130, 206)
     
     p = doc.add_paragraph()
-    run = p.add_run('【縦置き・横置き両対応】')
+    run = p.add_run('【縦置きと横置き両対応】')
     run.font.bold = True
     run.font.color.rgb = RGBColor(72, 187, 120)
     
-    doc.add_paragraph('社内ポスター・掲示物をスライドショー形式で表示します。')
+    doc.add_paragraph('社内ポスターや掲示物をスライドショー形式で表示します。')
     
     doc.add_paragraph()
     h3 = doc.add_heading('対応フォーマット', level=3)
@@ -524,7 +524,7 @@ def create_spec_document():
     h2 = doc.add_heading('3.6 管理画面', level=2)
     h2.runs[0].font.color.rgb = RGBColor(49, 130, 206)
     
-    doc.add_paragraph('データ登録・設定変更を行う管理画面を提供します。サイネージ端末からのみアクセス可能です。')
+    doc.add_paragraph('データ登録と設定変更を行う管理画面を提供します。サイネージ端末からのみアクセス可能です。')
     
     doc.add_paragraph()
     h3 = doc.add_heading('機能一覧', level=3)
@@ -533,10 +533,10 @@ def create_spec_document():
     table.style = 'Table Grid'
     data = [
         ('機能', '説明'),
-        ('行動予定表管理', '社員の追加・編集・削除、行動状況の更新'),
-        ('施工サイクル管理', '作業項目の追加・編集・削除・並び替え、ステータス更新'),
-        ('協力業者管理', '業者の追加・編集・削除・並び替え'),
-        ('月間予定管理', '年月選択、日付ごとの予定入力・編集・削除'),
+        ('行動予定表管理', '社員の追加、編集、削除、行動状況の更新'),
+        ('施工サイクル管理', '作業項目の追加、編集、削除と並び替え、ステータス更新'),
+        ('協力業者管理', '業者の追加、編集、削除と並び替え'),
+        ('月間予定管理', '年月選択、日付ごとの予定入力、編集、削除'),
         ('ポスター管理', 'ディレクトリ指定、プレビュー、表示順設定'),
         ('表示設定', '切り替えサイクル秒数、各画面の表示/非表示、タッチモード切替'),
         ('画面定義管理', '新規画面の追加（将来拡張用）'),
@@ -654,8 +654,8 @@ def create_spec_document():
         ('Phase 1', '2週間', '基盤構築（Electron + DB + 設定読み込み）'),
         ('Phase 2', '2週間', 'サイネージ画面5種類の実装'),
         ('Phase 3', '2週間', '管理画面の実装'),
-        ('Phase 4', '1週間', '結合テスト・調整'),
-        ('Phase 5', '1週間', '納品・導入サポート'),
+        ('Phase 4', '1週間', '結合テストと調整'),
+        ('Phase 5', '1週間', '納品と導入サポート'),
     ]
     for i, row_data in enumerate(data):
         row = table.rows[i]
