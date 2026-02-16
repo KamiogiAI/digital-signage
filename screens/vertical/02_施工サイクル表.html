@@ -79,6 +79,23 @@
     .cycle-table tr:nth-child(even) { background: #edf2f7; }
     .cycle-table tr:nth-child(odd) { background: #ffffff; }
     
+    /* 行ごとの強調色 */
+    .row-complete {
+      background: #c6f6d5 !important;
+    }
+    .row-progress {
+      background: #bee3f8 !important;
+      border-left: 6px solid #3182ce;
+    }
+    .row-warning {
+      background: #fed7d7 !important;
+      border-left: 6px solid #e53e3e;
+    }
+    .row-custom {
+      background: #e9d8fd !important;
+      border-left: 6px solid #9f7aea;
+    }
+    
     .status-cell {
       text-align: center;
     }
@@ -196,13 +213,13 @@
             <td class="no-cell">3</td>
             <td class="content-cell">手はつり</td>
           </tr>
-          <tr>
+          <tr class="row-progress">
             <td class="status-cell"><span class="status-progress"></span></td>
             <td class="no-cell">4</td>
             <td class="content-cell">NAPP削孔</td>
           </tr>
-          <tr>
-            <td class="status-cell"><span class="status-pending">○</span></td>
+          <tr class="row-warning">
+            <td class="status-cell"><span class="status-warning">!</span></td>
             <td class="no-cell">5</td>
             <td class="content-cell">壁高欄コア削孔</td>
           </tr>
@@ -256,8 +273,8 @@
             <td class="no-cell">15</td>
             <td class="content-cell">鉄筋組立（上筋）</td>
           </tr>
-          <tr>
-            <td class="status-cell"><span class="status-pending">○</span></td>
+          <tr class="row-custom">
+            <td class="status-cell"><span class="status-custom">★</span></td>
             <td class="no-cell">16</td>
             <td class="content-cell">コンクリート打設</td>
           </tr>
